@@ -1,0 +1,270 @@
+/* ----------  VARIÁVEIS ---------- */
+:root{
+    --blue: #0b77c0;
+    --blue-dark: #075f97;
+    --bg-light: #f1f3f5;
+    --white: #ffffff;
+    --radius: .5rem;
+  }
+  
+  /* ----------  RESET ---------- */
+  *,*::before,*::after{ box-sizing:border-box; }
+  body{
+    margin:0;
+    font-family:"Montserrat", Arial, sans-serif;
+    background:var(--bg-light);
+    color:#333;
+  }
+  table{ border-collapse:collapse; width:100%; }
+  h1,h2{ margin:0; }
+  
+  /* ==========  SIDEBAR ========== */
+  .sidebar{
+    position:fixed;
+    inset:0 auto 0 0;
+    width:240px;
+    background:var(--blue);
+    color:var(--white);
+    display:flex;
+    flex-direction:column;
+    gap:2rem;
+    padding:1.2rem .9rem;
+    transform:translateX(-100%);
+    transition:transform .25s ease;
+    z-index:200;
+  }
+  .sidebar.open{ transform:none; }
+  
+  .sidebar-header{
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+  }
+  .sidebar-logo{ height:38px; width:38px; }
+  .sidebar-title{ font-size:1.45rem; font-weight:700; }
+  
+  .side-nav{
+    display:flex;
+    flex-direction:column;
+    gap:.6rem;
+  }
+  .side-nav a{
+    color:var(--white);
+    padding:.55rem .6rem;
+    border-radius:var(--radius);
+    display:flex;
+    align-items:center;
+    gap:.55rem;
+    font-weight:500;
+    transition:background .2s ease;
+  }
+  .side-nav a:hover,
+  .side-nav a.active{ background:rgba(255,255,255,.12); }
+  .side-nav .icon{ font-style:normal; }
+  
+  /* ==========  MAIN WRAPPER ========== */
+  .main-wrapper{
+    min-height:100vh;
+    margin-left:0;
+    display:flex;
+    flex-direction:column;
+    transition:margin-left .25s ease;
+  }
+  .sidebar.open + .main-wrapper{ margin-left:240px; }
+  
+  /* ----------  TOPBAR ---------- */
+  .topbar{
+    background:var(--white);
+    padding:.65rem 1rem;
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    border-bottom:3px solid var(--blue);
+    position:sticky;
+    top:0; z-index:100;
+  }
+  .burger{
+    width:30px; height:24px;
+    display:flex; flex-direction:column;
+    justify-content:space-between;
+    border:none; background:none; cursor:pointer;
+  }
+  .burger span{
+    height:3px; width:100%;
+    background:var(--blue);
+    border-radius:3px;
+    transition:transform .25s ease;
+  }
+  .view-title{ font-size:1.4rem; font-weight:600; flex:1; }
+  .user-greeting{ font-size:.95rem; }
+  
+  /* ----------  MAIN CONTENT ---------- */
+  .main-content{ flex:1; padding:2rem 1.25rem; }
+  
+  .table-section{ margin-bottom:2.8rem; }
+  .table-section h2{
+    font-size:1.35rem;
+    margin-bottom:.85rem;
+    color:var(--blue-dark);
+  }
+  
+  .table-wrapper{
+    overflow-x:auto;
+    background:var(--white);
+    border-radius:var(--radius);
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+  }
+  
+  .styled-table th,
+  .styled-table td{
+    padding:.75rem .9rem;
+    text-align:left;
+  }
+  .styled-table thead{
+    background:var(--blue);
+    color:var(--white);
+  }
+  .styled-table tbody tr:nth-child(even){
+    background:#f8f9fa;
+  }
+  .styled-table tbody tr:hover{
+    background:rgba(11,119,192,.08);
+  }
+  
+  /* ----------  FOOTER ---------- */
+  .footer{
+    text-align:center;
+    font-size:.85rem;
+    padding:.6rem 1rem;
+    background:var(--blue);
+    color:var(--white);
+  }
+  
+  /* ----------  RESPONSIVO ---------- */
+  @media (min-width:900px){
+    .sidebar{ transform:none; }
+    .main-wrapper{ margin-left:240px; }
+  }
+  @media (max-width:600px){
+    .view-title{ font-size:1.1rem; }
+    .user-greeting{ display:none; }
+  }
+  
+  /* ----------  BURGER ICON ANIMATION  ---------- */
+.burger span{
+    height:3px; width:100%;
+    background:var(--blue);
+    border-radius:3px;
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  .burger.open span:nth-child(1){
+    transform:translateY(10px) rotate(45deg);
+  }
+  .burger.open span:nth-child(2){
+    opacity:0;
+  }
+  .burger.open span:nth-child(3){
+    transform:translateY(-10px) rotate(-45deg);
+  }
+  
+  /* ----------  SIDEBAR ↔ WRAPPER SHIFT  ---------- */
+  .main-wrapper.shift{                     /* aplica apenas em telas < 900 px */
+    margin-left:240px;
+  }
+  @media (min-width:900px){
+    .main-wrapper.shift{ margin-left:240px; }  /* mantém alinhado em desktop */
+  }
+  
+/* ----------  ACTION BUTTONS  ---------- */
+.actions{ white-space:nowrap; }  /* evita quebra */
+.btn-action{
+  padding:.3rem .55rem;
+  font-size:.8rem;
+  border:none;
+  border-radius:4px;
+  font-weight:600;
+  cursor:pointer;
+  transition:opacity .2s ease;
+  margin-right:.4rem;
+}
+.btn-action:last-child{ margin-right:0; }
+.btn-action.ok{
+  background:#23c16b;      /* verde */
+  color:#fff;
+}
+.btn-action.danger{
+  background:#e04c4c;      /* vermelho */
+  color:#fff;
+}
+.btn-action:hover{ opacity:.9; }
+.btn-action:active{ transform:scale(.97); }
+
+/* ----------  SEARCH TOOLBAR  ---------- */
+.toolbar{
+  margin-bottom:1rem;
+  display:flex;
+  align-items:center;
+  gap:.8rem;                /* espaçamento entre input e botão */
+}
+
+.search-input{
+  flex:1 1 260px;           /* mantém 260 px máx., mas cresce se houver espaço */
+  /* max-width:260px; */
+  padding:.5rem .7rem;
+  border:1.7px solid #d1d5db;
+  border-radius:4px;
+  font-family:inherit;
+  font-size:.9rem;
+  transition:border-color .2s ease;
+}
+.search-input:focus{
+  border-color:var(--blue);
+  outline:none;
+}
+
+/* =========  PRETTIER “NOVO VEÍCULO” BUTTON  ========= */
+.add-parked-btn{
+  /* base layout */
+  position:relative;                     /* so the pseudo‑icon can sit inside */
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+
+  /* sizing & shape */
+  padding:.55rem 1.45rem .55rem 3.1rem;  /* extra left‑pad for icon circle */
+  border-radius:30px;
+  font-size:.9rem;
+  font-weight:600;
+  letter-spacing:.3px;
+
+  /* eye‑candy */
+  background:linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+  color:#fff;
+  border:none;
+  box-shadow:0 4px 10px rgba(0,0,0,.15);
+  transition:box-shadow .25s ease, transform .2s ease, filter .2s ease;
+}
+
+.add-parked-btn::before{                /* circular “plus” badge */
+  content:"+";
+  position:absolute;
+  left:1rem; top:50%; transform:translateY(-50%);
+
+  width:1.55rem; height:1.55rem;
+  display:flex; align-items:center; justify-content:center;
+
+  background:#fff;
+  color:var(--blue);
+  font-weight:700; font-size:1.15rem;
+  border-radius:50%;
+  box-shadow:0 2px 4px rgba(0,0,0,.12);
+}
+
+.add-parked-btn:hover{
+  box-shadow:0 6px 14px rgba(0,0,0,.18);
+  transform:translateY(-2px);
+  filter:brightness(1.05);
+}
+.add-parked-btn:active{
+  transform:scale(.97);
+}

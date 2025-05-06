@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SysPark – Veículos Cadastrados</title>
+
+  <!-- Tipografia principal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos desta tela -->
+  <link rel="stylesheet" href="../../styles/registered_vehicles/styles.css">
+</head>
+<body>
+
+  <!-- ========  LATERAL / HAMBURGUER  ======== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="logo.svg" alt="SysPark logo" class="sidebar-logo">
+      <span class="sidebar-title">SYSPARK</span>
+    </div>
+
+    <nav class="side-nav">
+      <a href="parked_vehicles.html"><i class="icon">&#128663;</i>Veículos</a>
+      <a href="registered_vehicles.html" class="active"><i class="icon">&#128221;</i>Veículos&nbsp;Cadastrados</a>
+      <a href="#"><i class="icon">&#127359;</i>Vagas</a>
+      <a href="login.html" class="logout"><i class="icon">&#10162;</i>Sair</a>
+    </nav>
+  </aside>
+
+  <!-- ========  CONTEÚDO PRINCIPAL  ======== -->
+  <div class="main-wrapper">
+
+    <!-- --------  TOPBAR  -------- -->
+    <header class="topbar" id="topbar">
+      <button class="burger" id="burger" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <h1 class="view-title">Veículos cadastrados</h1>
+
+      <button class="btn btn-blue add-btn">Novo&nbsp;veículo</button>
+    </header>
+
+    <main class="main-content">
+      <!-- ----- FILTRO / PESQUISA ----- -->
+      <div class="toolbar">
+        <input type="text" id="searchInput" placeholder="Buscar por placa, modelo..." class="search-input">
+      </div>
+
+      <!-- ----- TABELA DE VEÍCULOS CADASTRADOS ----- -->
+      <section class="table-section">
+        <div class="table-wrapper">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Placa</th>
+                <th>Modelo</th>
+                <th>Cor</th>
+                <th>Ano</th>
+                <th>Categoria</th>
+                <th>Data&nbsp;Cadastro</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="registeredTableBody">
+              <tr>
+                <td>DEF‑2B34</td>
+                <td>Renault Kwid</td>
+                <td>Branco</td>
+                <td>2022</td>
+                <td>Hatch</td>
+                <td>03/05/2025</td>
+                <td class="actions">
+                  <button class="btn-action ok">Editar</button>
+                  <button class="btn-action danger">Deletar</button>
+                </td>
+              </tr>
+              <tr>
+                <td>MNO‑9D12</td>
+                <td>Volkswagen T‑Cross</td>
+                <td>Azul</td>
+                <td>2021</td>
+                <td>SUV</td>
+                <td>01/04/2025</td>
+                <td class="actions">
+                  <button class="btn-action ok">Editar</button>
+                  <button class="btn-action danger">Deletar</button>
+                </td>
+              </tr>
+              <!-- ...dados vindos do backend -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      Copyright 2025 – SysPark
+    </footer>
+  </div>
+
+  <!-- ========  JS p/ menu  ======== -->
+  <script>
+    const burger   = document.getElementById('burger');
+    const sidebar  = document.getElementById('sidebar');
+    const wrapper  = document.querySelector('.main-wrapper');
+
+    burger.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      wrapper.classList.toggle('shift');
+      burger.classList.toggle('open');
+    });
+
+    /* --------- FILTRO RÁPIDO --------- */
+    document.getElementById('searchInput').addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+      document.querySelectorAll('#registeredTableBody tr').forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>

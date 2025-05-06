@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SysPark – Cadastre‑se</title>
+
+  <!-- Montserrat: tipografia principal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS desta página -->
+  <link rel="stylesheet" href="../../styles/signup/styles.css">
+</head>
+<body>
+
+  <div class="page">
+    <!-- =========  HEADER / NAVBAR  ========= -->
+    <header class="topbar" id="topbar">
+      <div class="brand-box">
+        <img src="../../assets/logo.svg" alt="Ícone SysPark" class="logo">
+    </div>
+    
+    <a href="../../index.html">
+        <h1 class="brand">SYSPARK</h1>
+    </a>
+      <!-- ação primária: voltar ao login -->
+      <a href="login.html" class="btn btn-blue">Entrar</a>
+    </header>
+
+    <!-- =========  ÁREA DE CADASTRO  ========= -->
+    <section class="signup-section">
+      <div class="signup-card">
+        <h2>Criar conta</h2>
+        <p class="subtitle">Preencha os campos abaixo para começar a usar o SysPark</p>
+
+        <form action="#" method="post" autocomplete="off">
+          <input type="text"     name="name"            placeholder="Nome completo"           required>
+          <input type="email"    name="email"           placeholder="Email"                  required>
+          <input type="password" name="password"        placeholder="Senha"                  required minlength="6">
+          <input type="password" name="password_confirm"placeholder="Confirmar senha"        required minlength="6">
+          <button type="submit" class="btn btn-blue full">Cadastrar</button>
+        </form>
+
+        <a href="login.html" class="have-account">Já tem conta? Faça login</a>
+      </div>
+    </section>
+
+    <!-- =========  FOOTER  ========= -->
+    <footer class="footer">
+      Copyright&nbsp;2025 – SysPark · Todos os direitos reservados
+    </footer>
+  </div>
+
+  <!-- sombra do header quando rolar -->
+  <script>
+    const topbar = document.getElementById('topbar');
+    window.addEventListener('scroll', () => {
+      topbar.classList.toggle('scrolled', window.scrollY > 10);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SysPark – Vagas</title>
+
+  <!-- Tipografia principal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS desta tela -->
+  <link rel="stylesheet" href="../../styles/parking_spots/styles.css">
+</head>
+<body>
+
+  <!-- ========  SIDEBAR / HAMBURGUER  ======== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="logo.svg" alt="SysPark logo" class="sidebar-logo">
+      <span class="sidebar-title">SYSPARK</span>
+    </div>
+
+    <nav class="side-nav">
+      <a href="parked_vehicles.html"><i class="icon">&#128663;</i>Veículos</a>
+      <a href="registered_vehicles.html"><i class="icon">&#128221;</i>Veículos&nbsp;Cadastrados</a>
+      <a href="vagas.html" class="active"><i class="icon">&#127359;</i>Vagas</a>
+      <a href="login.html" class="logout"><i class="icon">&#10162;</i>Sair</a>
+    </nav>
+  </aside>
+
+  <!-- ========  CONTEÚDO PRINCIPAL  ======== -->
+  <div class="main-wrapper">
+
+    <!-- --------  TOPBAR  -------- -->
+    <header class="topbar" id="topbar">
+      <button class="burger" id="burger" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <h1 class="view-title">Gerenciamento de vagas</h1>
+
+      <button class="btn btn-blue add-spot-btn">Nova&nbsp;vaga</button>
+    </header>
+
+    <main class="main-content">
+
+      <!-- ----- FILTRO / PESQUISA ----- -->
+      <div class="toolbar">
+        <input type="text" id="searchInput" placeholder="Buscar por vaga, setor..." class="search-input">
+        <button class="btn btn-blue add-spot-btn small">Nova&nbsp;vaga</button> <!-- aparece em telas menores -->
+      </div>
+
+      <!-- ----- TABELA DE VAGAS ----- -->
+      <section class="table-section">
+        <div class="table-wrapper">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Vaga</th>
+                <th>Setor</th>
+                <th>Status</th>
+                <th>Veículo (placa)</th>
+                <th>Desde</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="spotsTableBody">
+              <tr>
+                <td>01</td>
+                <td>A</td>
+                <td><span class="badge free">Livre</span></td>
+                <td>—</td>
+                <td>—</td>
+                <td class="actions">
+                  <button class="btn-action ok">Editar</button>
+                  <button class="btn-action danger">Desativar</button>
+                </td>
+              </tr>
+              <tr>
+                <td>15</td>
+                <td>B</td>
+                <td><span class="badge busy">Ocupada</span></td>
+                <td>ABC‑1A23</td>
+                <td>08:05</td>
+                <td class="actions">
+                  <button class="btn-action ok">Liberar</button>
+                  <button class="btn-action danger">Editar</button>
+                </td>
+              </tr>
+              <tr>
+                <td>22</td>
+                <td>C</td>
+                <td><span class="badge maintenance">Manutenção</span></td>
+                <td>—</td>
+                <td>—</td>
+                <td class="actions">
+                  <button class="btn-action ok">Ativar</button>
+                </td>
+              </tr>
+              <!-- ...dados vindos do backend -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      Copyright 2025 – SysPark
+    </footer>
+  </div>
+
+  <!-- ========  JS p/ menu + busca  ======== -->
+  <script>
+    /* --- Menu lateral --- */
+    const burger   = document.getElementById('burger');
+    const sidebar  = document.getElementById('sidebar');
+    const wrapper  = document.querySelector('.main-wrapper');
+
+    burger.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      wrapper.classList.toggle('shift');
+      burger.classList.toggle('open');
+    });
+
+    /* --- Filtro rápido --- */
+    document.getElementById('searchInput').addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+      document.querySelectorAll('#spotsTableBody tr').forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>

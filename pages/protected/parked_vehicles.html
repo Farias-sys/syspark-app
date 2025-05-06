@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SysPark – Veículos estacionados</title>
+
+  <!-- Tipografia principal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos desta tela -->
+  <link rel="stylesheet" href="../../styles/parked_vehicles/styles.css">
+</head>
+<body>
+
+  <!-- ========  LATERAL / HAMBURGUER  ======== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="../../assets/logo.svg" alt="SysPark logo" class="sidebar-logo">
+      <span class="sidebar-title">SYSPARK</span>
+    </div>
+
+    <nav class="side-nav">
+      <a href="parked_vehicles.html" class="active"><i class="icon">&#128663;</i>Veículos</a>
+      <a href="#"><i class="icon">&#128221;</i>Veículos&nbsp;Cadastrados</a>
+      <a href="#"><i class="icon">&#127359;</i>Vagas</a>
+      <a href="login.html" class="logout"><i class="icon">&#10162;</i>Sair</a>
+    </nav>
+    
+  </aside>
+
+  <!-- ========  CONTEÚDO PRINCIPAL  ======== -->
+  <div class="main-wrapper">
+
+    <!-- --------  TOPBAR  -------- -->
+    <header class="topbar" id="topbar">
+      <button class="burger" id="burger" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <h1 class="view-title">Painel de veículos</h1>
+
+      <span class="user-greeting">Olá, Admin</span>
+    </header>
+
+    <main class="main-content">
+        <!-- --------  FILTRO / PESQUISA -------- -->
+<!-- --------  FILTRO / PESQUISA + AÇÃO -------- -->
+<div class="toolbar">
+  <input type="text" id="searchInput"
+         placeholder="Buscar por placa, modelo..."
+         class="search-input">
+
+  <!-- novo botão -->
+  <button class="btn btn-blue add-parked-btn">
+    Novo&nbsp;veículo
+  </button>
+</div>
+
+      <!-- ----- TABELA DE VEÍCULOS ATUAIS ----- -->
+      <section class="table-section">
+        <h2>Veículos estacionados</h2>
+
+        <div class="table-wrapper">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Placa</th>
+                <th>Modelo</th>
+                <th>Cor</th>
+                <th>Vaga</th>
+                <th>Entrada</th>
+                <th>Ações</th>              <!-- NOVO -->
+              </tr>
+            </thead>
+            <tbody id="currentTableBody">
+              <tr>
+                <td>ABC‑1A23</td>
+                <td>Fiat Argo</td>
+                <td>Vermelho</td>
+                <td>12</td>
+                <td>08:05</td>
+                <td class="actions">
+                  <button class="btn-action ok">Registrar&nbsp;Saída</button>
+                  <button class="btn-action danger">Deletar</button>
+                </td>
+              </tr>
+              <!-- … outros registros … -->
+            </tbody>
+          </table>
+          
+        </div>
+      </section>
+
+      <!-- ----- HISTÓRICO ----- -->
+      <section class="table-section">
+        <h2>Histórico de saídas</h2>
+
+        <div class="table-wrapper">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Placa</th>
+                <th>Modelo</th>
+                <th>Cor</th>
+                <th>Entrada</th>
+                <th>Saída</th>
+                <th>Duração</th>
+                <th>Valor (R$)</th>         <!-- NOVO -->
+              </tr>
+            </thead>
+            <tbody id="historyTableBody">
+              <tr>
+                <td>JKL‑8C90</td>
+                <td>Chevrolet Onix</td>
+                <td>Preto</td>
+                <td>06:57</td>
+                <td>08:22</td>
+                <td>1 h 25 min</td>
+                <td>18,50</td>
+              </tr>
+              <!-- … outros registros … -->
+            </tbody>
+          </table>
+          
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      Copyright&nbsp;2025 – SysPark
+    </footer>
+  </div>
+
+  <!-- ========  JS p/ menu  ======== -->
+  <script>
+    // =====  MENU BURGER  =====
+    const burger   = document.getElementById('burger');
+    const sidebar  = document.getElementById('sidebar');
+    const wrapper  = document.querySelector('.main-wrapper');
+  
+    burger.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      wrapper.classList.toggle('shift');
+      burger.classList.toggle('open');
+    });
+  
+    // =====  PESQUISA INSTANTÂNEA  =====
+    document.getElementById('searchInput').addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+  
+      ['currentTableBody', 'historyTableBody'].forEach(tbodyId => {
+        document.querySelectorAll(`#${tbodyId} tr`).forEach(row => {
+          row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
+        });
+      });
+    });
+  </script>
+  
+  
+
+</body>
+</html>

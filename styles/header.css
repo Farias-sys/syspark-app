@@ -1,0 +1,82 @@
+  /* ----------  HEADER / NAVBAR  ---------- */
+  .topbar{
+    display:grid;                                /*  ⬅  GRID  */
+    grid-template-columns:1fr auto 1fr;          /* col‑esq | col‑central | col‑dir  */
+    align-items:center;
+    gap:1rem;
+    padding:.6rem 1.25rem;
+    border-bottom:4px solid var(--blue);
+    position:sticky; top:0; z-index:50;
+    transition:box-shadow .25s ease;
+    background:var(--white);
+  }
+  .topbar.scrolled{ box-shadow:0 2px 6px rgba(0,0,0,.15); }
+  
+  /* logotipo + texto */
+  .brand-box{
+    display:flex;
+    align-items:center;
+    gap:.65rem;
+    justify-self:start;                            /* fica à esquerda */
+  }
+  .logo{ height:44px; width:44px; object-fit:contain; }
+  .brand{
+    margin:0;
+    font-size:1.9rem;
+    font-weight:700;
+    color:var(--blue);
+    letter-spacing:.5px;
+  }
+  
+  /* menu central */
+  .nav-links{
+    display:flex;
+    gap:1.4rem;
+    justify-self:center;                           /* centralizado em todo header */
+  }
+  .nav-links a{
+    color:var(--blue);                             /* contraste sobre fundo branco */
+    font-weight:600;
+    position:relative;
+    padding:.25rem 0;
+    transition:color .2s ease;
+  }
+  .nav-links a::after{                             /* sublinhado animado */
+    content:"";
+    position:absolute; left:0; bottom:0;
+    width:100%; height:2px;
+    background:var(--blue);
+    transform:scaleX(0);
+    transform-origin:right;
+    transition:transform .25s ease;
+  }
+  .nav-links a:hover{ color:var(--blue-dark); }
+  .nav-links a:hover::after{ transform:scaleX(1); transform-origin:left; }
+  
+  /* botão “Entrar” à direita */
+  .btn{
+    display:inline-block;
+    padding:.45rem 1.2rem;
+    border-radius:2rem;
+    font-weight:600;
+    font-size:1rem;
+    transition:transform .2s ease, background .2s ease;
+    cursor:pointer;
+    user-select:none;
+    line-height:1.2;
+    white-space:nowrap;
+    justify-self:end;                              /* fixa na coluna direita */
+  }
+  .btn-blue{
+    background:var(--blue);
+    color:var(--white);
+  }
+  .btn-blue:hover{ background:var(--blue-dark); transform:translateY(-1px); }
+  .btn-blue:active{ transform:scale(.97); }
+  .nav-links a.active,
+  .nav-links a.active:hover{
+    color:var(--blue-dark);
+  }
+  .nav-links a.active::after{
+    transform:scaleX(1);        /* sublinhado permanente na página ativa */
+  }

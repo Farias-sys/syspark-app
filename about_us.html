@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SysPark – Sobre nós</title>
+
+  <!-- Montserrat: tipografia principal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS desta página -->
+  <link rel="stylesheet" href="./styles/index.css">
+  <link rel="stylesheet" href="./styles/layout.css">
+  <link rel="stylesheet" href="./styles/header.css">
+  <link rel="stylesheet" href="./styles/footer.css">
+  <link rel="stylesheet" href="./styles/landing_page/about_us.css">
+</head>
+<body>
+
+  <div class="page">
+    <!-- =========  HEADER / NAVBAR  ========= -->
+    <header class="topbar" id="topbar">
+      <div class="brand-box">
+        <img src="../../assets/logo.svg" alt="Ícone SysPark" class="logo">
+        <h1 class="brand">SYSPARK</h1>
+      </div>
+
+      <nav class="nav-links" aria-label="Navegação principal">
+        <a href="./about_us.html" class="active">Sobre&nbsp;nós</a>
+        <a href="../../index.html">Início</a>
+        <a href="./contact.html">Fale&nbsp;Conosco</a>
+      </nav>
+
+      <a href="login.html" class="btn btn-blue">Entrar</a>
+    </header>
+
+    <!-- =========  HERO PEQUENO  ========= -->
+    <section class="hero-sobre">
+      <h2>Sobre&nbsp;nós</h2>
+    </section>
+
+    <!-- =========  CONTEÚDO  ========= -->
+    <main class="about-wrapper">
+
+      <p class="intro">
+        A <strong>SysPark</strong> nasceu em 2023 com o objetivo de simplificar a gestão de estacionamentos
+        utilizando tecnologia de ponta e uma experiência de usuário verdadeiramente intuitiva.
+      </p>
+
+      <h3>Nossa missão</h3>
+      <p>
+        Capacitar administradores de estacionamentos de todos os portes a <strong>maximizar a ocupação</strong>,
+        reduzir custos operacionais e fornecer um serviço mais eficiente aos seus clientes,
+        tudo por meio de uma única plataforma web.
+      </p>
+
+      <h3>Nossos valores</h3>
+      <div class="values-grid">
+        <article class="value-card">
+          <h4>Inovação</h4>
+          <p>Desafiamos o status quo todos os dias, incorporando as tecnologias mais recentes ao nosso produto.</p>
+        </article>
+        <article class="value-card">
+          <h4>Transparência</h4>
+          <p>Processos claros, métricas visíveis e comunicação aberta com colaboradores e clientes.</p>
+        </article>
+        <article class="value-card">
+          <h4>Sustentabilidade</h4>
+          <p>Integramos recursos que incentivam o uso compartilhado de vagas e reduzem a pegada de carbono.</p>
+        </article>
+      </div>
+
+      <h3>Quer saber mais?</h3>
+      <p>
+        Ficou com dúvidas ou deseja uma demonstração personalizada?
+        <a href="contato.html" class="link-highlight">Entre em contato</a> — teremos prazer em conversar!
+      </p>
+    </main>
+
+    <!-- =========  FOOTER  ========= -->
+    <footer class="footer">
+      Copyright&nbsp;2025 – SysPark · Todos os direitos reservados
+    </footer>
+  </div>
+
+  <!-- sombra do header quando rolar -->
+  <script>
+    const topbar = document.getElementById('topbar');
+    window.addEventListener('scroll', () => {
+      topbar.classList.toggle('scrolled', window.scrollY > 10);
+    });
+  </script>
+
+</body>
+</html>

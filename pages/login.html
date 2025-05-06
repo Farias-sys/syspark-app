@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SysPark – Login</title>
+
+  <!-- Montserrat: tipografia principal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS desta página -->
+  <link rel="stylesheet" href="../../styles/login/styles.css">
+</head>
+<body>
+
+  <div class="page">
+    <!-- =========  HEADER / NAVBAR  ========= -->
+    <header class="topbar" id="topbar">
+      <div class="brand-box">
+        <img src="../../assets/logo.svg" alt="Ícone SysPark" class="logo">
+      </div>
+      <h1 class="brand">SYSPARK</h1>
+    </header>
+
+    <!-- =========  ÁREA DE LOGIN  ========= -->
+    <section class="login-section">
+      <div class="login-card">
+        <h2>Login</h2>
+        <p class="subtitle">Acesse sua conta para continuar</p>
+
+        <form action="#" method="post" autocomplete="off">
+          <input type="text"  name="user"  placeholder="Email ou nome de usuário" required>
+          <input type="password" name="pass"  placeholder="Senha"                   required>
+          <button type="submit" class="btn btn-blue full">Entrar</button>
+        </form>
+
+        <a href="#" class="forgot">Esqueceu sua senha?</a>
+      </div>
+    </section>
+
+    <!-- =========  FOOTER  ========= -->
+    <footer class="footer">
+      Copyright&nbsp;2025 – SysPark · Todos os direitos reservados
+    </footer>
+  </div>
+
+  <!-- sombra do header quando rolar -->
+  <script>
+    const topbar = document.getElementById('topbar');
+    window.addEventListener('scroll', () => {
+      topbar.classList.toggle('scrolled', window.scrollY > 10);
+    });
+  </script>
+
+</body>
+</html>

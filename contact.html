@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SysPark – Fale Conosco</title>
+
+  <!-- Montserrat: tipografia principal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS desta página -->
+
+</head>
+<body>
+
+  <div class="page">
+    <!-- =========  HEADER / NAVBAR  ========= -->
+    <header class="topbar" id="topbar">
+      <div class="brand-box">
+        <img src="../../assets/logo.svg" alt="Ícone SysPark" class="logo">
+        <h1 class="brand">SYSPARK</h1>
+      </div>
+
+      <nav class="nav-links" aria-label="Navegação principal">
+        <a href="./about_us.html">Sobre&nbsp;nós</a>
+        <a href="../../index.html">Início</a>
+        <a href="./contact.html" class="active">Fale&nbsp;Conosco</a>
+      </nav>
+
+      <a href="login.html" class="btn btn-blue">Entrar</a>
+    </header>
+
+    <!-- =========  HERO PEQUENO  ========= -->
+    <section class="hero-contato">
+      <h2>Fale&nbsp;Conosco</h2>
+    </section>
+
+    <!-- =========  CONTEÚDO PRINCIPAL  ========= -->
+    <main class="contact-wrapper">
+      <!-- -----------  FORMULÁRIO  ----------- -->
+      <form class="contact-form" action="#" method="post" autocomplete="off">
+        <h3>Envie‑nos uma mensagem</h3>
+
+        <label>
+          Nome completo
+          <input type="text" name="name" placeholder="Seu nome" required>
+        </label>
+
+        <label>
+          Email
+          <input type="email" name="email" placeholder="exemplo@email.com" required>
+        </label>
+
+        <label>
+          Assunto
+          <input type="text" name="subject" placeholder="Assunto da mensagem" required>
+        </label>
+
+        <label class="full">
+          Mensagem
+          <textarea name="message" rows="5" placeholder="Escreva aqui sua mensagem..." required></textarea>
+        </label>
+
+        <button type="submit" class="btn btn-blue btn-submit">Enviar</button>
+      </form>
+
+      <!-- -----------  DADOS DE CONTATO  ----------- -->
+      <aside class="contact-info">
+        <h3>Informações de contato</h3>
+
+        <p><strong>Email:</strong> suporte@syspark.com</p>
+        <p><strong>Telefone:</strong> +55&nbsp;(11)&nbsp;4000‑1234</p>
+        <p><strong>Horário de atendimento:</strong><br>
+           Segunda a Sexta, 9h&nbsp;–&nbsp;18h (BRT)</p>
+
+        <div class="info-card">
+          <h4>Endereço</h4>
+          <p>Av. Paulista, 1000 – 10º andar<br>São Paulo / SP&nbsp; 01310‑100</p>
+        </div>
+
+        <div class="info-card">
+          <h4>Suporte on‑line</h4>
+          <p>Nosso time responde em média em <strong>até 1 h</strong> durante o horário comercial.</p>
+        </div>
+      </aside>
+    </main>
+
+    <!-- =========  FOOTER  ========= -->
+    <footer class="footer">
+      Copyright&nbsp;2025 – SysPark · Todos os direitos reservados
+    </footer>
+  </div>
+
+  <!-- sombra do header quando rolar -->
+  <script>
+    const topbar = document.getElementById('topbar');
+    window.addEventListener('scroll', () => {
+      topbar.classList.toggle('scrolled', window.scrollY > 10);
+    });
+  </script>
+
+</body>
+</html>

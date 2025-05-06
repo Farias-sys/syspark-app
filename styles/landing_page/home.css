@@ -1,0 +1,56 @@
+ 
+
+  
+  
+  /* ----------  HERO  ---------- */
+  .hero{
+    position:relative;
+    flex:1;
+    background:url("../../assets/landing_page_background.svg") center/cover no-repeat;
+    isolation:isolate;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:0 1rem;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:var(--overlay);
+    z-index:-1;
+  }
+  .hero h2{
+    font-size:clamp(1.8rem, 4vw + 1rem, 3.5rem);
+    font-weight:700;
+    line-height:1.25;
+    margin:0 0 2rem;
+    animation:fadeUp .8s ease .2s both;
+  }
+  .btn-cta{
+    border:2px solid var(--white);
+    background:var(--white);
+    color:#000;
+    padding:.55rem 2rem;
+    font-size:1.1rem;
+    animation:fadeUp .8s ease .4s both;
+  }
+  .btn-cta:hover{ transform:translateY(-2px); }
+  .btn-cta:active{ transform:scale(.97); }
+  
+  
+  /* ----------  ANIMAÇÕES & RESPONSIVO  ---------- */
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(20px); }
+    to{ opacity:1; transform:none; }
+  }
+  @media (max-width:650px){
+    .brand{ font-size:1.5rem; }
+    .nav-links{ display:none; }                    /* esconde menu em telas pequenas */
+  }
+  @media (max-width:500px){
+    .btn-blue{ font-size:.9rem; padding:.4rem 1rem; }
+    .btn-cta{ font-size:1rem; width:100%; max-width:240px; }
+  }
+  
