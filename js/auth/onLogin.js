@@ -7,8 +7,25 @@ $(document).ready(
             const obj = Object.fromEntries(
                           arr.map(({name, value}) => [name, value])
                         );
+            
+            $.ajax({
+                type: 'POST',
+                url: '../../server/auth/auth.php',
+                data: {
+                    login: obj.user,
+                    password: obj.pwd
+                },
+                success: function (response) {
+                    const data = JSON.parse(response);
+                    if (data.status === 'success') {
+                        window.location.assign('/pages/protected/parked_vehicles.html');
+                    } else {
+                        const errorMessageHelper = document.getElementById('error-message');
+                        errorMessageHelper.innerHTML = 'Usuário ou senha inválidos!';
+                    }
+                }
 
-            window.location.assign('/pages/protected/parked_vehicles.html')
+            })
         })
     }
 )
