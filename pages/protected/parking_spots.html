@@ -1,188 +1,185 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SysPark – Vagas</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SysPark – Vagas</title>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Tipografia principal -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="../../styles/protected/index.css">
-  <link rel="stylesheet" href="../../styles/footer.css">
-  <link rel="stylesheet" href="../../styles/protected/parking_spots.css">
-  <link rel="stylesheet" href="../../styles/protected/search_toolbar.css">
-  <link rel="stylesheet" href="../../styles/protected/topbar.css">
-  <link rel="stylesheet" href="../../styles/protected/sidebar.css">
-</head>
-<body>
-
-  <!-- ========  SIDEBAR / HAMBURGUER  ======== -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <img src="../../assets/logo.svg" alt="SysPark logo" class="sidebar-logo">
-      <span class="sidebar-title">SYSPARK</span>
-    </div>
-
-    <nav class="side-nav">
-      <a href="parked_vehicles.html"><i class="icon">&#128663;</i>Controle do estacionamento</a>
-      <a href="registered_vehicles.html"><i class="icon">&#128221;</i>Veículos&nbsp;Cadastrados</a>
-      <a href="vagas.html" class="active"><i class="icon">&#127359;</i>Vagas</a>
-      <a href="login.html" class="logout"><i class="icon">&#10162;</i>Sair</a>
-    </nav>
-  </aside>
-
-  <!-- ========  CONTEÚDO PRINCIPAL  ======== -->
-  <div class="main-wrapper">
-
-    <!-- --------  TOPBAR  -------- -->
-    <header class="topbar" id="topbar">
-      <button class="burger" id="burger" aria-label="Abrir menu">
-        <span></span><span></span><span></span>
-      </button>
-
-      <h1 class="view-title">Gerenciamento de vagas</h1>
-    </header>
-
-    <main class="main-content">
-
-      <!-- ----- FILTRO / PESQUISA ----- -->
-      <div class="toolbar">
-        <input type="text" id="searchInput" placeholder="Buscar por vaga, setor..." class="search-input">
-        <button class="btn btn-blue add-crud-btn" data-toggle="modal" data-target="#create-parking-spot-modal">Nova&nbsp;vaga</button> <!-- aparece em telas menores -->
+    <link rel="stylesheet" href="../../styles/protected/index.css"/>
+    <link rel="stylesheet" href="../../styles/footer.css"/>
+    <link rel="stylesheet" href="../../styles/protected/parking_spots.css"/>
+    <link rel="stylesheet" href="../../styles/protected/search_toolbar.css"/>
+    <link rel="stylesheet" href="../../styles/protected/topbar.css"/>
+    <link rel="stylesheet" href="../../styles/protected/sidebar.css"/>
+  </head>
+  <body>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="../../assets/logo.svg" alt="SysPark logo" class="sidebar-logo"/>
+        <span class="sidebar-title">SYSPARK</span>
       </div>
+      <nav class="side-nav">
+        <a href="parked_vehicles.html"><i class="icon">🚣‍♂️</i>Controle do estacionamento</a>
+        <a href="registered_vehicles.html"><i class="icon">📝</i>Veículos Cadastrados</a>
+        <a href="vagas.html" class="active"><i class="icon">🚧</i>Vagas</a>
+        <a href="login.html" class="logout"><i class="icon">↪️</i>Sair</a>
+      </nav>
+    </aside>
 
-      <!-- ----- TABELA DE VAGAS ----- -->
-      <section class="table-section">
-        <div class="table-wrapper">
-          <table class="styled-table">
-            <thead>
-              <tr>
-                <th>Vaga</th>
-                <th>Status</th>
-                <th>Veículo (placa)</th>
-                <th>Desde</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="spotsTableBody">
-              <tr>
-                <td>01</td>
-                <td><span class="badge free">Livre</span></td>
-                <td>—</td>
-                <td>—</td>
-                <td class="actions">
-                  <button class="btn-action danger" data-toggle="modal" data-target="#deactivate-parking-spot-modal">Desativar</button>
-                </td>
-              </tr>
-              <tr>
-                <td>15</td>
-                <td><span class="badge busy">Ocupada</span></td>
-                <td>ABC‑1A23</td>
-                <td>08:05</td>
-                <td class="actions">
-                  <button class="btn-action danger">Desativar</button>
-                </td>
-              </tr>
-              <tr>
-                <td>22</td>
-                <td><span class="badge maintenance">Manutenção</span></td>
-                <td>—</td>
-                <td>—</td>
-                <td class="actions">
-                  <button class="btn-action ok" data-toggle="modal" data-target="#activate-parking-spot-modal">Ativar</button>
-                </td>
-              </tr>
-              <!-- ...dados vindos do backend -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </main>
+    <div class="main-wrapper">
+      <header class="topbar" id="topbar">
+        <button class="burger" id="burger" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <h1 class="view-title">Gerenciamento de vagas</h1>
+      </header>
 
-    <footer class="footer">
-      Copyright 2025 – SysPark
-    </footer>
-  </div>
-
-  <div class="modal fade" id="create-parking-spot-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Criar nova vaga</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
+      <main class="main-content">
+        <div class="toolbar">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar por vaga, setor..."
+            class="search-input"
+          />
+          <button
+            class="btn btn-blue add-crud-btn"
+            data-toggle="modal"
+            data-target="#create-parking-spot-modal"
+          >
+            Nova vaga
           </button>
         </div>
-        <div class="modal-body">
-          <form id="createParkingSpotForm">
-            <div class="form-group">
-              <label for="spotNumber">Quantas vagas deseja criar?</label>
-              <input type="number" class="form-control" id="spotNumber" name="spotNumber" required>
-            </div>
-            <div style="text-align: right;">
-              <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Criar vagas</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="modal fade" id="activate-parking-spot-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Ativar vaga</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Tem certeza de que deseja ativar esta vaga?</p>
-          <div style="text-align: right;">
-            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success">Ativar vaga</button>
+        <section class="table-section">
+          <div class="table-wrapper">
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Vaga</th>
+                  <th>Status</th>
+                  <th>Veículo (placa)</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="spotsTableBody"></tbody>
+            </table>
           </div>
-        </div> 
-      </div>
-    </div>
-  </div>
+        </section>
+      </main>
 
-  <div class="modal fade" id="deactivate-parking-spot-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Desativar vaga</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Tem certeza de que deseja desativar esta vaga?</p>
-          <div style="text-align: right;">
-            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-danger">Desativar vaga</button>
+      <footer class="footer">Copyright 2025 – SysPark</footer>
+    </div>
+
+    <div class="modal fade" id="create-parking-spot-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Criar nova vaga</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-        </div> 
+          <div class="modal-body">
+            <form id="create-parking-spot-form">
+              <div class="form-group">
+                <label for="spotNumber">Quantas vagas deseja criar?</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="spotNumber"
+                  name="spotNumber"
+                  required
+                />
+              </div>
+              <div class="text-right">
+                <button type="reset" class="btn btn-secondary" data-dismiss="modal">
+                  Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">Criar vagas</button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  </div>
+    <div class="modal fade" id="activate-parking-spot-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Ativar vaga</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Tem certeza de que deseja ativar esta vaga?</p>
+            <div class="text-right">
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-success">Ativar vaga</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <div class="modal fade" id="deactivate-parking-spot-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Desativar vaga</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Tem certeza de que deseja desativar esta vaga?</p>
+            <div class="text-right">
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="button" id="delete-spot-btn" class="btn btn-danger">
+                Desativar vaga
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <script src="../../js/ui/sidebar.js"></script>
-  <script src="../../js/ui/search_table.js"></script>
-  <script src="../../js/ui/form_behavior.js"></script>
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
 
-</body>
+    <script src="../../js/ui/sidebar.js"></script>
+    <script src="../../js/ui/search_table.js"></script>
+    <script src="../../js/ui/form_behavior.js"></script>
+    <script src="../../js/modules/parkingSpotsControl.js"></script>
+  </body>
 </html>

@@ -3,6 +3,15 @@
 require_once '../../db/db.php';
 $conn = connectToDatabase();
 
+$id = $_POST['id'] ?? null;
+if (!is_numeric($id)) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Invalid or missing `id`.'
+    ]);
+    exit;
+}
+
 $res = mysqli_query($conn, "SELECT active FROM parking_spots WHERE id = '$id'");
 if (!$res || mysqli_num_rows($res) === 0) {
     echo json_encode([
