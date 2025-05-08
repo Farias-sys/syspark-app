@@ -37,7 +37,7 @@ const renderParkingSpotsTable = (parkingSpots) => {
       }
 
       const plateCell = spot.status === 'busy'
-        ? spot.vehicle_plate
+        ? spot.in_use_by
         : '—';
 
       let actionBtn;
