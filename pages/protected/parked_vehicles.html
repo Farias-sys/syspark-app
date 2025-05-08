@@ -1,73 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SysPark – Veículos estacionados</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SysPark – Veículos estacionados</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles/protected/index.css">
+  <link rel="stylesheet" href="../../styles/footer.css">
+  <link rel="stylesheet" href="../../styles/protected/parked_vehicles.css">
+  <link rel="stylesheet" href="../../styles/protected/search_toolbar.css">
+  <link rel="stylesheet" href="../../styles/protected/topbar.css">
+  <link rel="stylesheet" href="../../styles/protected/sidebar.css">
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="../../assets/logo.svg" alt="SysPark logo" class="sidebar-logo">
+      <span class="sidebar-title">SYSPARK</span>
+    </div>
+    <nav class="side-nav">
+      <a href="#" class="active"><i class="icon">&#128663;</i>Controle do estacionamento</a>
+      <a href="./registered_vehicles.html"><i class="icon">&#128221;</i>Veículos&nbsp;Cadastrados</a>
+      <a href="./parking_spots.html"><i class="icon">&#127359;</i>Vagas</a>
+      <a href="../login.html" class="logout"><i class="icon">&#10162;</i>Sair</a>
+    </nav>
+  </aside>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <!-- Tipografia principal -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="../../styles/protected/index.css">
-    <link rel="stylesheet" href="../../styles/footer.css">
-    <link rel="stylesheet" href="../../styles/protected/parked_vehicles.css">
-    <link rel="stylesheet" href="../../styles/protected/search_toolbar.css">
-    <link rel="stylesheet" href="../../styles/protected/topbar.css">
-    <link rel="stylesheet" href="../../styles/protected/sidebar.css">
-  </head>
-  <body>
-
-    <!-- ========  LATERAL / HAMBURGUER  ======== -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <img src="../../assets/logo.svg" alt="SysPark logo" class="sidebar-logo">
-        <span class="sidebar-title">SYSPARK</span>
-      </div>
-
-      <nav class="side-nav">
-        <a href="#" class="active"><i class="icon">&#128663;</i>Controle do estacionamento</a>
-        <a href="./registered_vehicles.html"><i class="icon">&#128221;</i>Veículos&nbsp;Cadastrados</a>
-        <a href="./parking_spots.html"><i class="icon">&#127359;</i>Vagas</a>
-        <a href="../login.html" class="logout"><i class="icon">&#10162;</i>Sair</a>
-      </nav>
-
-    </aside>
-
-    <!-- ========  CONTEÚDO PRINCIPAL  ======== -->
-    <div class="main-wrapper">
-
-    <!-- --------  TOPBAR  -------- -->
+  <div class="main-wrapper">
     <header class="topbar" id="topbar">
       <button class="burger" id="burger" aria-label="Abrir menu">
         <span></span><span></span><span></span>
       </button>
-
       <h1 class="view-title">Painel de veículos</h1>
-
       <span class="user-greeting">Olá, Admin</span>
     </header>
 
     <main class="main-content">
-      <!-- --------  FILTRO / PESQUISA + AÇÃO -------- -->
       <div class="toolbar">
-        <input type="text" id="searchInput"
-        placeholder="Buscar por placa, modelo..."
-        class="search-input">
-
-      <!-- novo botão -->
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Buscar por placa, modelo..."
+          class="search-input"
+        />
         <button class="btn btn-blue add-crud-btn" data-toggle="modal" data-target="#park-vehicle-modal">
           Estacionar veículo
         </button>
       </div>
 
-      <!-- ----- TABELA DE VEÍCULOS ATUAIS ----- -->
       <section class="table-section">
         <h2>Veículos estacionados</h2>
-
         <div class="table-wrapper">
           <table class="styled-table">
             <thead>
@@ -77,32 +62,16 @@
                 <th>Cor</th>
                 <th>Vaga</th>
                 <th>Entrada</th>
-                <th>Ações</th>              <!-- NOVO -->
+                <th>Ações</th>
               </tr>
             </thead>
-            <tbody id="currentTableBody">
-              <tr>
-                <td>ABC‑1A23</td>
-                <td>Fiat Argo</td>
-                <td>Vermelho</td>
-                <td>12</td>
-                <td>08:05</td>
-                <td class="actions">
-                  <button class="btn-action ok" data-toggle="modal" data-target="#register-exit-vehicle-modal">Registrar&nbsp;Saída</button>
-                  <button class="btn-action danger" data-toggle="modal" data-target="#delete-parked-vehicle-modal">Deletar</button>
-                </td>
-              </tr>
-            <!-- … outros registros … -->
-            </tbody>
+            <tbody id="currentTableBody"></tbody>
           </table>
-
         </div>
       </section>
 
-      <!-- ----- HISTÓRICO ----- -->
       <section class="table-section">
         <h2>Histórico de saídas</h2>
-
         <div class="table-wrapper">
           <table class="styled-table">
             <thead>
@@ -113,23 +82,11 @@
                 <th>Entrada</th>
                 <th>Saída</th>
                 <th>Duração</th>
-                <th>Valor (R$)</th>         <!-- NOVO -->
+                <th>Valor (R$)</th>
               </tr>
             </thead>
-            <tbody id="historyTableBody">
-              <tr>
-                <td>JKL‑8C90</td>
-                <td>Chevrolet Onix</td>
-                <td>Preto</td>
-                <td>06:57</td>
-                <td>08:22</td>
-                <td>1 h 25 min</td>
-                <td>18,50</td>
-              </tr>
-            <!-- … outros registros … -->
-            </tbody>
+            <tbody id="historyTableBody"></tbody>
           </table>
-
         </div>
       </section>
     </main>
@@ -137,99 +94,119 @@
     <footer class="footer">
       Copyright&nbsp;2025 – SysPark
     </footer>
-    </div>
+  </div>
 
-    <div class="modal fade" id="park-vehicle-modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Estacionar novo veículo</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <label for="license-plate">Placa</label>
-                <input type="text" class="form-control" id="license-plate" placeholder="ABC1A23" required>
-              </div>
-              <div class="form-group">
-                <label for="model">Modelo</label>
-                <input type="text" class="form-control" id="model" placeholder="Fiat Argo" required>
-              </div>
-              <div class="form-group">
-                <label for="color">Cor</label>
-                <input type="text" class="form-control" id="color" placeholder="Vermelho" required>
-              </div>
-              <div class="form-group">
-                <label for="spot">Vaga</label>
-                <select class="custom-select custom-select-md" id="spot" required>
-                  <option value="" disabled selected>Selecione uma vaga</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-              </div>
-              <div style="text-align: right;">
-                <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Estacionar veículo!</button>
-              </div>
-            </form>
-          </div>
+  <div class="modal fade" id="park-vehicle-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Estacionar novo veículo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="park-vehicle-form">
+            <div class="form-group">
+              <label for="license-plate">Placa</label>
+              <input
+                type="text"
+                class="form-control"
+                id="plate"
+                name="plate"
+                placeholder="ABC1A23"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="model">Modelo</label>
+              <input
+                type="text"
+                class="form-control"
+                id="model"
+                name="model"
+                placeholder="Fiat Argo"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="color">Cor</label>
+              <input
+                type="text"
+                class="form-control"
+                id="color"
+                name="color"
+                placeholder="Vermelho"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="spot">Vaga</label>
+              <select class="custom-select custom-select-md" name="spot" id="spot" required>
+                <option value="" disabled selected>Selecione uma vaga</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+            <div style="text-align: right;">
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Estacionar veículo!</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="modal fade" id="register-exit-vehicle-modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Registrar saída do veículo</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Você tem certeza que deseja registrar a saída do veículo?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-success">Registrar saída</button>
-          </div>
+  <div class="modal fade" id="register-exit-vehicle-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Registrar saída do veículo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Você tem certeza que deseja registrar a saída do veículo?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success">Registrar saída</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="modal fade" id="delete-parked-vehicle-modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Deletar veículo estacionado</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Você tem certeza que deseja deletar o veículo estacionado?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-danger">Deletar veículo</button>
-          </div>
+  <div class="modal fade" id="delete-parked-vehicle-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Deletar veículo estacionado</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Você tem certeza que deseja deletar o veículo estacionado?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger">Deletar veículo</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-    <script src="../../js/ui/sidebar.js"></script>
-    <script src="../../js/ui/search_table.js"></script>
-    <script src="../../js/ui/form_behavior.js"></script>
-
-  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="../../js/ui/sidebar.js"></script>
+  <script src="../../js/ui/search_table.js"></script>
+  <script src="../../js/ui/form_behavior.js"></script>
+  <script src="../../js/modules/parkedVehiclesControl.js"></script>
+</body>
 </html>

@@ -5,24 +5,28 @@ $conn = connectToDatabase();
 
 
 $id = $_POST['id'] ?? null;
-$date_end = $_POST['date_end'] ?? null;
-$value = $_POST['value'] ?? null;
 
-if (!$id || !$date_end || !$value) {
+if (!$id) {
     echo json_encode([
         'status' => 'error',
-        'message' => 'Missing one of required fields: id, date_end, value'
+        'message' => 'Missing one of required field: id'
     ]);
     exit;
 }
 
-// perform update
+$id = mysqli_real_escape_string($conn, $id);
+
 $sql = "
     UPDATE parked_vehicles
-       SET date_end = '$date_end',
-           invoice  = '$value'
-     WHERE id = '$id'
+        SET date_end = NOW(),
+            value    = CASE 
+                            WHEN TIMESTAMPDIFF(MINUTE, date_start, NOW()) * 0.33 < 20 
+                            THEN 15 
+                            ELSE TIMESTAMPDIFF(MINUTE, date_start, NOW()) * 0.33 
+                        END
+        WHERE id = '$id'
 ";
+
 $result = mysqli_query($conn, $sql);
 
 if ($result && mysqli_affected_rows($conn) > 0) {

@@ -8,7 +8,7 @@ $sql = "
     pv.id,
     v.plate,
     v.model,
-    v.color    AS cor,
+    v.color,
     pv.parking_spot_id AS parking_spot,
     pv.date_start,
     pv.date_end,
@@ -21,19 +21,19 @@ $sql = "
 $result = mysqli_query($conn, $sql);
 
 if (!$result) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'DB error: ' . mysqli_error($conn)
-    ]);
-    exit;
+  echo json_encode([
+    'status' => 'error',
+    'message' => 'DB error: ' . mysqli_error($conn)
+  ]);
+  exit;
 }
 
 $data = [];
 while ($row = mysqli_fetch_assoc($result)) {
-    $data[] = $row;
+  $data[] = $row;
 }
 
 echo json_encode([
-    'status' => 'success',
-    'data' => $data
+  'status' => 'success',
+  'data' => $data
 ]);

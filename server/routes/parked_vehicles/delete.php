@@ -4,12 +4,8 @@
 require_once '../../db/db.php';
 $conn = connectToDatabase();
 
-// Read raw request body & decode JSON
-$body = file_get_contents('php://input');
-$data = json_decode($body, true);
 
-
-if (empty($data['id'])) {
+if (empty($_POST['id'])) {
     echo json_encode([
         'status' => 'error',
         'message' => 'Operation ID is required to delete an entry'
@@ -17,7 +13,7 @@ if (empty($data['id'])) {
     exit;
 }
 
-$entry_id = $data['id'];
+$entry_id = $_POST['id'];
 
 mysqli_query(
     $conn,
