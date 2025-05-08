@@ -1,0 +1,48 @@
+  /* ----------  MAIN CONTENT ---------- */
+  .main-content{ flex:1; padding:2rem 1.25rem; }
+  
+  /* toolbar */
+  .toolbar{ margin-bottom:1rem; display:flex; justify-content:flex-end; }
+  .search-input{
+    /* max-width:260px;  */
+    width:100%;
+    padding:.5rem .7rem;
+    border:1.7px solid #d1d5db;
+    border-radius:4px;
+    font-family:inherit; font-size:.9rem;
+    transition:border-color .2s ease;
+  }
+  .search-input:focus{ border-color:var(--blue); outline:none; }
+  
+  /* Tabela */
+  .table-wrapper{
+    overflow-x:auto;
+    background:var(--white);
+    border-radius:var(--radius);
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+  }
+  .styled-table th,
+  .styled-table td{ padding:.75rem .9rem; text-align:left; }
+  .styled-table thead{ background:var(--blue); color:var(--white); }
+  .styled-table tbody tr:nth-child(even){ background:#f8f9fa; }
+  .styled-table tbody tr:hover{ background:rgba(11,119,192,.08); }
+  
+  /* ----------  ACTION BUTTONS ---------- */
+  .actions{ white-space:nowrap; }
+  .btn-action{
+    padding:.3rem .55rem; font-size:.8rem; border:none; border-radius:4px;
+    font-weight:600; cursor:pointer; transition:opacity .2s ease;
+    margin-right:.4rem;
+  }
+  .btn-action:last-child{ margin-right:0; }
+  .btn-action.ok{ background:#23c16b; color:#fff; }
+  .btn-action.danger{ background:#e04c4c; color:#fff; }
+  .btn-action:hover{ opacity:.9; }
+  .btn-action:active{ transform:scale(.97); }
+  
+  /* ----------  RESPONSIVO ---------- */
+  @media (max-width:600px){
+    .view-title{ font-size:1.1rem; }
+    .add-btn{ display:none; }           /* esconde botão para ganhar espaço */
+  }
+  

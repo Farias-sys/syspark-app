@@ -1,0 +1,19 @@
+/* ----------  VARIÁVEIS ---------- */
+:root{
+    --blue: #0b77c0;
+    --blue-dark: #075f97;
+
+    --white: #ffffff;
+    --radius: .5rem;
+}
+
+/* ----------  RESET ---------- */
+*,*::before,*::after{ box-sizing:border-box; }
+body{
+    margin:0;
+    font-family:"Montserrat", Arial, sans-serif;
+    background:var(--bg-light);
+    color:#333;
+}
+table{ border-collapse:collapse; width:100%; }
+h1,h2{ margin:0; }

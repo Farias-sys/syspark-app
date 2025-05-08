@@ -1,0 +1,69 @@
+/* ----------  SEARCH TOOLBAR  ---------- */
+.toolbar{
+    margin-bottom:1rem;
+    display:flex;
+    align-items:center;
+    gap:.8rem;                /* espaçamento entre input e botão */
+  }
+  
+.search-input{
+    flex:1 1 260px;           /* mantém 260 px máx., mas cresce se houver espaço */
+    /* max-width:260px; */
+    padding:.5rem .7rem;
+    border:1.7px solid #d1d5db;
+    border-radius:4px;
+    font-family:inherit;
+    font-size:.9rem;
+    transition:border-color .2s ease;
+}
+.search-input:focus{
+    border-color:var(--blue);
+    outline:none;
+}
+
+.add-crud-btn{
+    /* base layout */
+    position:relative;                     /* so the pseudo‑icon can sit inside */
+    display:inline-flex;
+    align-items:center;
+    gap:.4rem;
+  
+    /* sizing & shape */
+    padding:.55rem 1.45rem .55rem 3.1rem;  /* extra left‑pad for icon circle */
+    border-radius:30px;
+    font-size:.9rem;
+    font-weight:600;
+    letter-spacing:.3px;
+  
+    /* eye‑candy */
+    background:linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+    transition:box-shadow .25s ease, transform .2s ease, filter .2s ease;
+  }
+  
+.add-crud-btn::before{                /* circular “plus” badge */
+    content:"+";
+    position:absolute;
+    left:1rem; top:50%; transform:translateY(-50%);
+
+    width:1.55rem; height:1.55rem;
+    display:flex; align-items:center; justify-content:center;
+
+    background:#fff;
+    color:var(--blue);
+    font-weight:700; font-size:1.15rem;
+    border-radius:50%;
+    box-shadow:0 2px 4px rgba(0,0,0,.12);
+}
+
+.add-crud-btn:hover{
+    box-shadow:0 6px 14px rgba(0,0,0,.18);
+    transform:translateY(-2px);
+    filter:brightness(1.05);
+}
+.add-crud-btn:active{
+    transform:scale(.97);
+}
+  

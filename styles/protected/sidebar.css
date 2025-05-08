@@ -1,0 +1,79 @@
+/* ==========  SIDEBAR ========== */
+.sidebar{
+    position:fixed;
+    inset:0 auto 0 0;
+    width:240px;
+    background:var(--blue);
+    color:var(--white);
+    display:flex;
+    flex-direction:column;
+    gap:2rem;
+    padding:1.2rem .9rem;
+    transform:translateX(-100%);
+    transition:transform .25s ease;
+    z-index:200;
+}
+.sidebar.open{ transform:none; }
+
+.sidebar-header{
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+}
+.sidebar-logo{ height:38px; width:38px; }
+.sidebar-title{ font-size:1.45rem; font-weight:700; }
+
+.side-nav{
+    display:flex;
+    flex-direction:column;
+    gap:.6rem;
+}
+.side-nav a{
+    color:var(--white);
+    padding:.55rem .6rem;
+    border-radius:var(--radius);
+    display:flex;
+    align-items:center;
+    gap:.55rem;
+    font-weight:500;
+    transition:background .2s ease;
+}
+.side-nav a:hover,
+.side-nav a.active{ background:rgba(255,255,255,.12); }
+.side-nav .icon{ font-style:normal; }
+
+/* ==========  MAIN WRAPPER ========== */
+.main-wrapper{
+    min-height:100vh;
+    margin-left:0;
+    display:flex;
+    flex-direction:column;
+    transition:margin-left .25s ease;
+}
+.sidebar.open + .main-wrapper{ margin-left:240px; }
+
+/* ----------  BURGER ICON ANIMATION  ---------- */
+.burger span{
+    height:3px; 
+    width:100%;
+    background:var(--blue);
+    border-radius:3px;
+    transition:transform .25s ease, opacity .25s ease;
+}
+.burger.open span:nth-child(1){
+    transform:translateY(10px) rotate(45deg);
+}
+.burger.open span:nth-child(2){
+    opacity:0;
+}
+.burger.open span:nth-child(3){
+    transform:translateY(-10px) rotate(-45deg);
+}
+
+/* ----------  SIDEBAR ↔ WRAPPER SHIFT  ---------- */
+.main-wrapper.shift{                     /* aplica apenas em telas < 900 px */
+    margin-left:240px;
+}
+@media (min-width:900px){
+.main-wrapper.shift{ margin-left:240px; }  /* mantém alinhado em desktop */
+}

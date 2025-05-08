@@ -1,4 +1,6 @@
-
+body{
+  color:#444;
+}
   /* ----------  HERO PEQUENO ---------- */
   .hero-contato{
     position:relative;

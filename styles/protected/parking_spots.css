@@ -1,0 +1,42 @@
+  /* ----------  MAIN CONTENT ---------- */
+  .main-content{ flex:1; padding:2rem 1.25rem; }
+  
+  /* tabela */
+  .table-wrapper{
+    overflow-x:auto;
+    background:var(--white);
+    border-radius:var(--radius);
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+  }
+  .styled-table th,
+  .styled-table td{ padding:.75rem .9rem; text-align:left; }
+  .styled-table thead{ background:var(--blue); color:var(--white); }
+  .styled-table tbody tr:nth-child(even){ background:#f8f9fa; }
+  .styled-table tbody tr:hover{ background:rgba(11,119,192,.08); }
+  
+  /* badges de status */
+  .badge{
+    display:inline-block;
+    padding:.25rem .65rem;
+    border-radius:999px;
+    font-size:.75rem;
+    font-weight:600;
+    color:#fff;
+  }
+  .badge.free{ background:#23c16b; }
+  .badge.busy{ background:#e04c4c; }
+  .badge.maintenance{ background:#f0a202; }
+  
+  /* ----------  ACTION BUTTONS ---------- */
+  .actions{ white-space:nowrap; }
+  .btn-action{
+    padding:.3rem .55rem; font-size:.8rem; border:none; border-radius:4px;
+    font-weight:600; cursor:pointer; transition:opacity .2s ease;
+    margin-right:.4rem;
+  }
+  .btn-action:last-child{ margin-right:0; }
+  .btn-action.ok{ background:#23c16b; color:#fff; }
+  .btn-action.danger{ background:#e04c4c; color:#fff; }
+  .btn-action:hover{ opacity:.9; }
+  .btn-action:active{ transform:scale(.97); }
+  

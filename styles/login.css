@@ -1,76 +1,6 @@
-/* ----------  VARIÁVEIS ---------- */
-:root{
-  --blue: #0b77c0;
-  --blue-dark: #075f97;
-  --white: #ffffff;
-  --overlay: rgba(0,0,0,.55);
-  --radius: .5rem;
-}
-
-/* ----------  RESET / BASE ---------- */
-*, *::before, *::after{ box-sizing:border-box; }
 body{
-  margin:0;
-  font-family:"Montserrat", Arial, sans-serif;
-  background:#f1f3f5;
-  color:#444;
-  -webkit-font-smoothing:antialiased;
+  color: #444;
 }
-a{ color:inherit; text-decoration:none; }
-
-/* ----------  CONTAINER GLOBAL ---------- */
-.page{
-  margin:0;
-  background:var(--white);
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-}
-
-/* ----------  HEADER / NAVBAR ---------- */
-.topbar{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  gap:1rem;
-  padding:.6rem 1.25rem;
-  border-bottom:4px solid var(--blue);
-  position:sticky; top:0; z-index:50;
-  transition:box-shadow .25s ease;
-  background:var(--white);
-}
-.topbar.scrolled{ box-shadow:0 2px 6px rgba(0,0,0,.15); }
-
-.brand-box{ display:flex; align-items:center; gap:.65rem; justify-self:start; }
-.logo{ height:44px; width:44px; object-fit:contain; }
-.brand{
-  margin:0;
-  font-size:1.9rem;
-  font-weight:700;
-  color:var(--blue);
-  letter-spacing:.5px;
-}
-
-/* menu central */
-.nav-links{ display:flex; gap:1.4rem; justify-self:center; }
-.nav-links a{
-  color:var(--blue);
-  font-weight:600;
-  position:relative;
-  padding:.25rem 0;
-  transition:color .2s ease;
-}
-.nav-links a::after{
-  content:"";
-  position:absolute; left:0; bottom:0;
-  width:100%; height:2px;
-  background:var(--blue);
-  transform:scaleX(0);
-  transform-origin:right;
-  transition:transform .25s ease;
-}
-.nav-links a:hover{ color:var(--blue-dark); }
-.nav-links a:hover::after{ transform:scaleX(1); transform-origin:left; }
 
 /* ----------  LOGIN SECTION ---------- */
 .login-section{
@@ -152,15 +82,6 @@ a{ color:inherit; text-decoration:none; }
   color:var(--blue-dark);
 }
 .login-card .forgot:hover{ text-decoration:underline; }
-
-/* ----------  FOOTER ---------- */
-.footer{
-  background:var(--blue);
-  color:var(--white);
-  text-align:center;
-  font-size:.85rem;
-  padding:.6rem 1rem;
-}
 
 /* ----------  ANIMAÇÕES & RESPONSIVO ---------- */
 @keyframes fadeUp{

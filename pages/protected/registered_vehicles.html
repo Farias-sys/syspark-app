@@ -5,27 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SysPark – Veículos Cadastrados</title>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
   <!-- Tipografia principal -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Estilos desta tela -->
-  <link rel="stylesheet" href="../../styles/registered_vehicles/styles.css">
+  <link rel="stylesheet" href="../../styles/protected/index.css">
+  <link rel="stylesheet" href="../../styles/footer.css">
+  <link rel="stylesheet" href="../../styles/protected/registered_vehicles.css">
+  <link rel="stylesheet" href="../../styles/protected/search_toolbar.css">
+  <link rel="stylesheet" href="../../styles/protected/topbar.css">
+  <link rel="stylesheet" href="../../styles/protected/sidebar.css">
 </head>
 <body>
 
   <!-- ========  LATERAL / HAMBURGUER  ======== -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <img src="logo.svg" alt="SysPark logo" class="sidebar-logo">
+      <img src="../../assets/logo.svg" alt="SysPark logo" class="sidebar-logo">
       <span class="sidebar-title">SYSPARK</span>
     </div>
 
     <nav class="side-nav">
-      <a href="parked_vehicles.html"><i class="icon">&#128663;</i>Veículos</a>
+      <a href="parked_vehicles.html"><i class="icon">&#128663;</i>Controle do estacionamento</a>
       <a href="registered_vehicles.html" class="active"><i class="icon">&#128221;</i>Veículos&nbsp;Cadastrados</a>
-      <a href="#"><i class="icon">&#127359;</i>Vagas</a>
+      <a href="./parking_spots.html"><i class="icon">&#127359;</i>Vagas</a>
       <a href="login.html" class="logout"><i class="icon">&#10162;</i>Sair</a>
     </nav>
   </aside>
@@ -41,13 +47,16 @@
 
       <h1 class="view-title">Veículos cadastrados</h1>
 
-      <button class="btn btn-blue add-btn">Novo&nbsp;veículo</button>
     </header>
 
     <main class="main-content">
       <!-- ----- FILTRO / PESQUISA ----- -->
       <div class="toolbar">
         <input type="text" id="searchInput" placeholder="Buscar por placa, modelo..." class="search-input">
+
+        <button class="btn btn-blue add-crud-btn" data-toggle="modal" data-target="#create-vehicle-modal">
+          Cadastrar veículo
+        </button>
       </div>
 
       <!-- ----- TABELA DE VEÍCULOS CADASTRADOS ----- -->
@@ -59,8 +68,6 @@
                 <th>Placa</th>
                 <th>Modelo</th>
                 <th>Cor</th>
-                <th>Ano</th>
-                <th>Categoria</th>
                 <th>Data&nbsp;Cadastro</th>
                 <th>Ações</th>
               </tr>
@@ -70,20 +77,16 @@
                 <td>DEF‑2B34</td>
                 <td>Renault Kwid</td>
                 <td>Branco</td>
-                <td>2022</td>
-                <td>Hatch</td>
                 <td>03/05/2025</td>
                 <td class="actions">
-                  <button class="btn-action ok">Editar</button>
-                  <button class="btn-action danger">Deletar</button>
+                  <button class="btn-action ok" data-toggle="modal" data-target="#edit-vehicle-modal">Editar</button>
+                  <button class="btn-action danger" data-toggle="modal" data-target="#delete-vehicle-modal">Deletar</button>
                 </td>
               </tr>
               <tr>
                 <td>MNO‑9D12</td>
                 <td>Volkswagen T‑Cross</td>
                 <td>Azul</td>
-                <td>2021</td>
-                <td>SUV</td>
                 <td>01/04/2025</td>
                 <td class="actions">
                   <button class="btn-action ok">Editar</button>
@@ -102,26 +105,99 @@
     </footer>
   </div>
 
-  <!-- ========  JS p/ menu  ======== -->
-  <script>
-    const burger   = document.getElementById('burger');
-    const sidebar  = document.getElementById('sidebar');
-    const wrapper  = document.querySelector('.main-wrapper');
+  <div class="modal fade" id="create-vehicle-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Novo veículo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="license-plate">Placa</label>
+              <input type="text" class="form-control" id="license-plate" placeholder="ABC1A23" required>
+            </div>
+            <div class="form-group">
+              <label for="model">Modelo</label>
+              <input type="text" class="form-control" id="model" placeholder="Fiat Argo" required>
+            </div>
+            <div class="form-group">
+              <label for="color">Cor</label>
+              <input type="text" class="form-control" id="color" placeholder="Vermelho" required>
+            </div>
+            <div style="text-align: right;">
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Criar veículo</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    burger.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      wrapper.classList.toggle('shift');
-      burger.classList.toggle('open');
-    });
+  <div class="modal fade" id="edit-vehicle-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar veículo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="edit-license-plate">Placa</label>
+              <input type="text" class="form-control" id="edit-license-plate" placeholder="ABC1A23" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-model">Modelo</label>
+              <input type="text" class="form-control" id="edit-model" placeholder="Fiat Argo" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-color">Cor</label>
+              <input type="text" class="form-control" id="edit-color" placeholder="Vermelho" required>
+            </div>
+            <div style="text-align: right;">
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Salvar alterações</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    /* --------- FILTRO RÁPIDO --------- */
-    document.getElementById('searchInput').addEventListener('input', e => {
-      const term = e.target.value.toLowerCase();
-      document.querySelectorAll('#registeredTableBody tr').forEach(row => {
-        row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
-      });
-    });
-  </script>
+  <div class="modal fade" id="delete-vehicle-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Deletar veículo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Você tem certeza que deseja deletar este veículo?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger">Deletar veículo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  <script src="../../js/ui/sidebar.js"></script>
+  <script src="../../js/ui/search_table.js"></script>
+  <script src="../../js/ui/form_behavior.js"></script>
 
 </body>
 </html>

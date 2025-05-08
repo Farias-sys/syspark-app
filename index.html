@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SysPark – Página inicial</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysPark – Página inicial</title>
 
-  <!-- Montserrat: tipografia principal -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="./styles/index.css">
-  <link rel="stylesheet" href="./styles/layout.css">
-  <link rel="stylesheet" href="./styles/header.css">
-  <link rel="stylesheet" href="./styles/footer.css">
-  <link rel="stylesheet" href="./styles/landing_page/home.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="./styles/layout.css">
+    <link rel="stylesheet" href="./styles/header.css">
+    <link rel="stylesheet" href="./styles/footer.css">
+    <link rel="stylesheet" href="./styles/landing_page/home.css">
+  </head>
+  <body>
 
-  <div class="page">
-    <!-- =========  HEADER / NAVBAR  ========= -->
-    <header class="topbar" id="topbar">
+    <div class="page">
+      <!-- =========  HEADER / NAVBAR  ========= -->
+      <header class="topbar" id="topbar">
       <!-- bloco‑esquerdo = logo + marca -->
       <div class="brand-box">
         <img src="./assets/logo.svg" alt="Ícone SysPark" class="logo">
@@ -29,8 +29,8 @@
 
       <!-- links do menu -->
       <nav class="nav-links" aria-label="Navegação principal">
-          <a href="./about_us.html">Sobre&nbsp;nós</a>
-          <a class="active" href="index.html">Início</a>
+        <a href="./about_us.html">Sobre&nbsp;nós</a>
+        <a class="active" href="index.html">Início</a>
         <a href="./contact.html">Fale&nbsp;Conosco</a>
       </nav>
 
@@ -50,15 +50,14 @@
     <footer class="footer">
       Copyright&nbsp;2025 – SysPark · Todos os direitos reservados
     </footer>
-  </div>
+    </div>
 
-  <!-- sombra do header quando rolar -->
-  <script>
+    <!-- sombra do header quando rolar -->
+    <script>
     const topbar = document.getElementById('topbar');
     window.addEventListener('scroll', () => {
-      topbar.classList.toggle('scrolled', window.scrollY > 10);
+    topbar.classList.toggle('scrolled', window.scrollY > 10);
     });
-  </script>
-
-</body>
+    </script>
+  </body>
 </html>
