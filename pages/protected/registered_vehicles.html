@@ -1,204 +1,279 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SysPark – Veículos Cadastrados</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SysPark – Veículos Cadastrados</title>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../styles/protected/index.css" />
+    <link rel="stylesheet" href="../../styles/footer.css" />
+    <link rel="stylesheet" href="../../styles/protected/registered_vehicles.css" />
+    <link rel="stylesheet" href="../../styles/protected/search_toolbar.css" />
+    <link rel="stylesheet" href="../../styles/protected/topbar.css" />
+    <link rel="stylesheet" href="../../styles/protected/sidebar.css" />
+  </head>
 
-  <!-- Tipografia principal -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <body>
+    <aside class="sidebar open" id="sidebar">
+      <div class="sidebar-header">
+        <img src="../../assets/logo.svg" alt="SysPark logo" class="sidebar-logo" />
+        <span class="sidebar-title">SYSPARK</span>
+      </div>
+      <nav class="side-nav">
+        <a href="parked_vehicles.html">
+          <i class="icon">&#128663;</i>Controle do estacionamento
+        </a>
+        <a href="registered_vehicles.html" class="active">
+          <i class="icon">&#128221;</i>Veículos&nbsp;Cadastrados
+        </a>
+        <a href="parking_spots.html">
+          <i class="icon">&#127359;</i>Vagas
+        </a>
+        <a href="login.html" class="logout">
+          <a href="../login.html" class="logout"><i class="icon">&#10162;</i>Sair</a>
+        </a>
+      </nav>
+    </aside>
 
-  <link rel="stylesheet" href="../../styles/protected/index.css">
-  <link rel="stylesheet" href="../../styles/footer.css">
-  <link rel="stylesheet" href="../../styles/protected/registered_vehicles.css">
-  <link rel="stylesheet" href="../../styles/protected/search_toolbar.css">
-  <link rel="stylesheet" href="../../styles/protected/topbar.css">
-  <link rel="stylesheet" href="../../styles/protected/sidebar.css">
-</head>
-<body>
-
-  <!-- ========  LATERAL / HAMBURGUER  ======== -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <img src="../../assets/logo.svg" alt="SysPark logo" class="sidebar-logo">
-      <span class="sidebar-title">SYSPARK</span>
-    </div>
-
-    <nav class="side-nav">
-      <a href="parked_vehicles.html"><i class="icon">&#128663;</i>Controle do estacionamento</a>
-      <a href="registered_vehicles.html" class="active"><i class="icon">&#128221;</i>Veículos&nbsp;Cadastrados</a>
-      <a href="./parking_spots.html"><i class="icon">&#127359;</i>Vagas</a>
-      <a href="login.html" class="logout"><i class="icon">&#10162;</i>Sair</a>
-    </nav>
-  </aside>
-
-  <!-- ========  CONTEÚDO PRINCIPAL  ======== -->
-  <div class="main-wrapper">
-
-    <!-- --------  TOPBAR  -------- -->
-    <header class="topbar" id="topbar">
-      <button class="burger" id="burger" aria-label="Abrir menu">
-        <span></span><span></span><span></span>
-      </button>
-
-      <h1 class="view-title">Veículos cadastrados</h1>
-
-    </header>
-
-    <main class="main-content">
-      <!-- ----- FILTRO / PESQUISA ----- -->
-      <div class="toolbar">
-        <input type="text" id="searchInput" placeholder="Buscar por placa, modelo..." class="search-input">
-
-        <button class="btn btn-blue add-crud-btn" data-toggle="modal" data-target="#create-vehicle-modal">
-          Cadastrar veículo
+    <div class="main-wrapper shift">
+      <header class="topbar" id="topbar">
+        <button class="burger open" id="burger" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
         </button>
-      </div>
+        <h1 class="view-title">Veículos cadastrados</h1>
+      </header>
 
-      <!-- ----- TABELA DE VEÍCULOS CADASTRADOS ----- -->
-      <section class="table-section">
-        <div class="table-wrapper">
-          <table class="styled-table">
-            <thead>
-              <tr>
-                <th>Placa</th>
-                <th>Modelo</th>
-                <th>Cor</th>
-                <th>Data&nbsp;Cadastro</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="registeredTableBody">
-              <tr>
-                <td>DEF‑2B34</td>
-                <td>Renault Kwid</td>
-                <td>Branco</td>
-                <td>03/05/2025</td>
-                <td class="actions">
-                  <button class="btn-action ok" data-toggle="modal" data-target="#edit-vehicle-modal">Editar</button>
-                  <button class="btn-action danger" data-toggle="modal" data-target="#delete-vehicle-modal">Deletar</button>
-                </td>
-              </tr>
-              <tr>
-                <td>MNO‑9D12</td>
-                <td>Volkswagen T‑Cross</td>
-                <td>Azul</td>
-                <td>01/04/2025</td>
-                <td class="actions">
-                  <button class="btn-action ok">Editar</button>
-                  <button class="btn-action danger">Deletar</button>
-                </td>
-              </tr>
-              <!-- ...dados vindos do backend -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      Copyright 2025 – SysPark
-    </footer>
-  </div>
-
-  <div class="modal fade" id="create-vehicle-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Novo veículo</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+      <main class="main-content">
+        <div class="toolbar">
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Buscar por placa, modelo..."
+          />
+          <button
+            class="btn btn-blue add-crud-btn"
+            data-toggle="modal"
+            data-target="#create-vehicle-modal"
+          >
+            Cadastrar veículo
           </button>
         </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="license-plate">Placa</label>
-              <input type="text" class="form-control" id="license-plate" name="plate" placeholder="ABC1A23" required>
-            </div>
-            <div class="form-group">
-              <label for="model">Modelo</label>
-              <input type="text" class="form-control" id="model" name="model" placeholder="Fiat Argo" required>
-            </div>
-            <div class="form-group">
-              <label for="color">Cor</label>
-              <input type="text" class="form-control" id="color" name="color" placeholder="Vermelho" required>
-            </div>
-            <div style="text-align: right;">
-              <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Criar veículo</button>
-            </div>
-          </form>
+
+        <section class="table-section">
+          <div class="table-wrapper">
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Placa</th>
+                  <th>Modelo</th>
+                  <th>Cor</th>
+                  <th>Data&nbsp;Cadastro</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="registeredTableBody">
+                <tr>
+                  <td>DEF-2B34</td>
+                  <td>Renault Kwid</td>
+                  <td>Branco</td>
+                  <td>03/05/2025</td>
+                  <td class="actions">
+                    <button
+                      class="btn-action ok"
+                      data-toggle="modal"
+                      data-target="#edit-vehicle-modal"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      class="btn-action danger"
+                      data-toggle="modal"
+                      data-target="#delete-vehicle-modal"
+                    >
+                      Deletar
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>MNO-9D12</td>
+                  <td>Volkswagen T-Cross</td>
+                  <td>Azul</td>
+                  <td>01/04/2025</td>
+                  <td class="actions">
+                    <button class="btn-action ok">Editar</button>
+                    <button class="btn-action danger">Deletar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">Copyright 2025 – SysPark</footer>
+    </div>
+
+    <div class="modal fade" id="create-vehicle-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Novo veículo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="license-plate">Placa</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="license-plate"
+                  name="plate"
+                  placeholder="ABC1A23"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="model">Modelo</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="model"
+                  name="model"
+                  placeholder="Fiat Argo"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="color">Cor</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="color"
+                  name="color"
+                  placeholder="Vermelho"
+                  required
+                />
+              </div>
+              <div class="text-right">
+                <button type="reset" class="btn btn-secondary" data-dismiss="modal">
+                  Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">Criar veículo</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="modal fade" id="edit-vehicle-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Editar veículo</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="edit-license-plate">Placa</label>
-              <input type="text" class="form-control" id="edit-license-plate" name="plate" placeholder="ABC1A23" required>
-            </div>
-            <div class="form-group">
-              <label for="edit-model">Modelo</label>
-              <input type="text" class="form-control" id="edit-model" name="model" placeholder="Fiat Argo" required>
-            </div>
-            <div class="form-group">
-              <label for="edit-color">Cor</label>
-              <input type="text" class="form-control" id="edit-color" name="color" placeholder="Vermelho" required>
-            </div>
-            <div style="text-align: right;">
-              <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Salvar alterações</button>
-            </div>
-          </form>
+    <div class="modal fade" id="edit-vehicle-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Editar veículo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="edit-license-plate">Placa</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="edit-license-plate"
+                  name="plate"
+                  placeholder="ABC1A23"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="edit-model">Modelo</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="edit-model"
+                  name="model"
+                  placeholder="Fiat Argo"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="edit-color">Cor</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="edit-color"
+                  name="color"
+                  placeholder="Vermelho"
+                  required
+                />
+              </div>
+              <div class="text-right">
+                <button type="reset" class="btn btn-secondary" data-dismiss="modal">
+                  Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">Salvar alterações</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="modal fade" id="delete-vehicle-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Deletar veículo</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Você tem certeza que deseja deletar este veículo?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-danger">Deletar veículo</button>
+    <div class="modal fade" id="delete-vehicle-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Deletar veículo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Você tem certeza que deseja deletar este veículo?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger">Deletar veículo</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-  <script src="../../js/ui/sidebar.js"></script>
-  <script src="../../js/ui/search_table.js"></script>
-  <script src="../../js/ui/form_behavior.js"></script>
-  <script src="../../js/modules/registeredVehiclesControl.js"></script>
-
-</body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../js/ui/sidebar.js"></script>
+    <script src="../../js/ui/search_table.js"></script>
+    <script src="../../js/ui/form_behavior.js"></script>
+    <script src="../../js/modules/registeredVehiclesControl.js"></script>
+  </body>
 </html>
