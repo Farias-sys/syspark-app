@@ -114,7 +114,7 @@
     max-width:400px;
     background:var(--white);
     border-radius:var(--radius);
-    padding:2.6rem 2.2rem 2.8rem;
+    padding:2.6rem 2.2rem 1rem;
     text-align:center;
     box-shadow:0 4px 16px rgba(0,0,0,.18);
     animation:fadeUp .8s ease .1s both;
