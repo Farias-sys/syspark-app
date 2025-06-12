@@ -153,6 +153,7 @@ function listParkedVehicles() {
 }
 
 $(document).ready(
+
     () => {
         listParkedVehicles();
 
@@ -230,3 +231,48 @@ $(document).ready(
         });
     }
 );
+
+(() => {
+    const $plate = $('#plate');
+    const $model = $('#model');
+    const $color = $('#color');
+    const $list = $('#plateList');
+
+    $plate.on('input', async function () {
+        const q = this.value.toUpperCase();
+        if (q.length < 2) {
+            $list.empty();
+            return;
+        }
+        try {
+            const res = await $.getJSON('../../server/routes/parked_vehicles/suggest.php', { q });
+            if (res.status !== 'success') return;
+            $list.empty();
+            res.data.forEach(v =>
+                $('<option>')
+                    .val(v.plate)
+                    .text(`${v.plate} – ${v.model}`)
+                    .appendTo($list)
+            );
+        } catch (err) {
+            console.error(err);
+        }
+    });
+
+    $plate.on('change blur', async function () {
+        const plate = this.value.toUpperCase();
+        if (!plate) return;
+        try {
+            const res = await $.getJSON('../../server/routes/parked_vehicles/get.php', { plate });
+            if (res.status === 'success' && res.data) {
+                $model.val(res.data.model).prop('readonly', true);
+                $color.val(res.data.color).prop('readonly', true);
+            } else {
+                $model.val('').prop('readonly', false);
+                $color.val('').prop('readonly', false);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    });
+})();
