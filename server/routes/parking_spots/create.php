@@ -1,8 +1,23 @@
 <?php
+// server/routes/parking_spots/create.php
+// Create N parking spots for the current user. Each spot gets a sequential
+// spot_number per user via the BEFORE-INSERT trigger added in the DDL upgrade.
 
 require_once '../../db/db.php';
-$conn = connectToDatabase();
+session_start();
 
+/* ───────────────────────────── Auth guard ─────────────────────────────── */
+if (empty($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Not authenticated'
+    ]);
+    exit;
+}
+$user_id = $_SESSION['user_id'];
+
+/* ────────────────────────── Validate POST data ────────────────────────── */
 $count = $_POST['count'] ?? null;
 if (!is_numeric($count) || (int) $count < 1) {
     echo json_encode([
@@ -13,17 +28,35 @@ if (!is_numeric($count) || (int) $count < 1) {
 }
 $count = (int) $count;
 
+/* ─────────────────────────── DB: bulk insert ──────────────────────────── */
+$conn = connectToDatabase();
+
 try {
-    $values = array_fill(0, $count, "( )");
-    $sql = "INSERT INTO parking_spots () VALUES " . implode(",", $values);
-    mysqli_query($conn, $sql);
+    // Build "(?) , (?) , ...", one placeholder per row
+    $placeholders = implode(',', array_fill(0, $count, '(?)'));
+    $sql = "INSERT INTO parking_spots (user_id) VALUES $placeholders";
+    $stmt = $conn->prepare($sql);
+
+    /* Bind the *same* user_id to every "(?)"
+       We need call_user_func_array() because bind_param() expects
+       a variable number of arguments passed by reference.          */
+    $types = str_repeat('i', $count);                 // e.g. 'iii' for 3 rows
+    $params = array_merge([$types], array_fill(0, $count, $user_id));
+
+    // Convert to references
+    $refs = [];
+    foreach ($params as $k => $v) {
+        $refs[$k] = &$params[$k];
+    }
+    call_user_func_array([$stmt, 'bind_param'], $refs);
+    $stmt->execute();
 
     echo json_encode([
         'status' => 'success',
-        'message' => "{$count} parking spot(s) created."
+        'message' => "$count parking spot(s) created."
     ]);
-
-} catch (\Throwable $e) {
+} catch (Throwable $e) {
+    http_response_code(500);
     echo json_encode([
         'status' => 'error',
         'message' => 'Database error: ' . $e->getMessage()

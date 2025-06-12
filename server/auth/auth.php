@@ -13,7 +13,7 @@ $result = mysqli_stmt_get_result($stmt);
 
 if ($user = mysqli_fetch_assoc($result)) {
     session_start();
-    $_SESSION['id'] = $user['id'];
+    $_SESSION['user_id'] = $user['id'];
     $_SESSION['login'] = $user['login'];
 
     echo json_encode([

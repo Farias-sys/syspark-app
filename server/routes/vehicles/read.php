@@ -1,35 +1,27 @@
 <?php
+// api/vehicles/read.php  – list vehicles that belong to the user
 
 require_once '../../db/db.php';
-$conn = connectToDatabase();
+session_start();
 
-$sql = "
-    SELECT
-        id,
-        plate,
-        model,
-        color,
-        date_created
-    FROM vehicles
-    ORDER BY plate
-";
-
-$result = mysqli_query($conn, $sql);
-
-if (!$result) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'DB error: ' . mysqli_error($conn)
-    ]);
+if (empty($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['status' => 'error', 'message' => 'Not authenticated']);
     exit;
 }
+$user_id = $_SESSION['user_id'];
 
-$data = [];
-while ($row = mysqli_fetch_assoc($result)) {
-    $data[] = $row;
-}
+$conn = connectToDatabase();
+$stmt = $conn->prepare(
+    "SELECT id, plate, model, color, date_created
+       FROM vehicles
+      WHERE user_id = ?
+   ORDER BY plate"
+);
+$stmt->bind_param('i', $user_id);
+$stmt->execute();
+$res = $stmt->get_result();
 
-echo json_encode([
-    'status' => 'success',
-    'data' => $data
-]);
+$data = $res->fetch_all(MYSQLI_ASSOC);
+
+echo json_encode(['status' => 'success', 'data' => $data]);

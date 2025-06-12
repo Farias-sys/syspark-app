@@ -23,52 +23,51 @@ const toggleParkingSpot = (id) => {
 }
 
 const renderParkingSpotsTable = (parkingSpots) => {
-    const $tbody = $('#spotsTableBody').empty();
+  const $tbody = $('#spotsTableBody').empty();
 
-    parkingSpots.forEach(spot => {
+  parkingSpots.forEach(spot => {
 
-        let badgeClass, badgeText;
-      if (spot.status === 'available') {
-        badgeClass = 'free';    badgeText = 'Livre';
-      } else if (spot.status === 'busy') {
-        badgeClass = 'busy';    badgeText = 'Ocupada';
-      } else {
-        badgeClass = 'maintenance'; badgeText = 'Manutenção';
-      }
+    /* status badge ---------------------------------------------------- */
+    let badgeClass, badgeText;
+    if (spot.status === 'available') {
+      badgeClass = 'free';       badgeText = 'Livre';
+    } else if (spot.status === 'busy') {
+      badgeClass = 'busy';       badgeText = 'Ocupada';
+    } else {
+      badgeClass = 'maintenance'; badgeText = 'Manutenção';
+    }
 
-      const plateCell = spot.status === 'busy'
-        ? spot.in_use_by
-        : '—';
+    /* placa ou travessão --------------------------------------------- */
+    const plateCell = spot.status === 'busy' ? spot.in_use_by : '—';
 
-      let actionBtn;
-      if (spot.status === 'innoperant') {
-        actionBtn = `<button class="btn-action ok"
-                               data-spot-id="${spot.id}"
-                               data-toggle="modal"
-                               data-target="#activate-parking-spot-modal">
-                       Ativar vaga
-                     </button>`;
-      } else {
-        actionBtn = `<button class="btn-action danger"
-                               data-spot-id="${spot.id}"
-                               data-toggle="modal"
-                               data-target="#deactivate-parking-spot-modal">
-                       Desativar vaga
-                     </button>`;
-      }
+    /* ação  (ativar / desativar) ------------------------------------- */
+    const actionBtn = (spot.status === 'innoperant')
+      ? `<button class="btn-action ok"
+                 data-spot-id="${spot.id}"
+                 data-toggle="modal"
+                 data-target="#activate-parking-spot-modal">
+           Ativar vaga
+         </button>`
+      : `<button class="btn-action danger"
+                 data-spot-id="${spot.id}"
+                 data-toggle="modal"
+                 data-target="#deactivate-parking-spot-modal">
+           Desativar vaga
+         </button>`;
 
-      const $tr = $(`
-        <tr>
-          <td>${spot.id.toString().padStart(2,'0')}</td>
-          <td><span class="badge ${badgeClass}">${badgeText}</span></td>
-          <td>${plateCell}</td>
-          <td class="actions">${actionBtn}</td>
-        </tr>
-      `);
+    /* --- ⬇️  note the change on the first <td>  ⬇️ ------------------ */
+    const $tr = $(`
+      <tr>
+        <td>${String(spot.spot_number).padStart(2,'0')}</td>
+        <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+        <td>${plateCell}</td>
+        <td class="actions">${actionBtn}</td>
+      </tr>
+    `);
 
-      $tbody.append($tr);
-    })
-}
+    $tbody.append($tr);
+  });
+};
 
 const listParkingSpots = () => {
     getParkingSpots().done((response) => {

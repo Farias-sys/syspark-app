@@ -1,44 +1,56 @@
 <?php
+// api/vehicles/update.php  – edit a vehicle for the user
 
 require_once '../../db/db.php';
-$conn = connectToDatabase();
+session_start();
 
+/* ── Auth guard ───────────────────────────── */
+if (empty($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['status' => 'error', 'message' => 'Not authenticated']);
+    exit;
+}
+$user_id = $_SESSION['user_id'];
+
+/* ── Validate input ───────────────────────── */
 $id = $_POST['id'] ?? null;
-$plate = trim($_POST['plate'] ?? '');
+$plate = strtoupper(trim($_POST['plate'] ?? ''));
 $model = trim($_POST['model'] ?? '');
 $color = trim($_POST['color'] ?? '');
 
 if (!is_numeric($id) || $plate === '' || $model === '' || $color === '') {
     echo json_encode([
         'status' => 'error',
-        'message' => 'Missing or invalid fields: id, plate, model, and color are required.'
+        'message' => 'Missing or invalid fields: id, plate, model, color are required.'
     ]);
     exit;
 }
 $id = (int) $id;
 
-$plateEsc = mysqli_real_escape_string($conn, $plate);
-$modelEsc = mysqli_real_escape_string($conn, $model);
-$colorEsc = mysqli_real_escape_string($conn, $color);
+/* ── DB connection ────────────────────────── */
+$conn = connectToDatabase();
 
-$check = mysqli_query($conn, "SELECT plate FROM vehicles WHERE id = {$id}");
-if (!$check || mysqli_num_rows($check) === 0) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Vehicle not found.'
-    ]);
+/* 1. confirm ownership */
+$own = $conn->prepare(
+    "SELECT plate FROM vehicles WHERE id = ? AND user_id = ?"
+);
+$own->bind_param('ii', $id, $user_id);
+$own->execute();
+$resOwn = $own->get_result();
+if ($resOwn->num_rows === 0) {
+    echo json_encode(['status' => 'error', 'message' => 'Vehicle not found.']);
     exit;
 }
+$currentPlate = $resOwn->fetch_assoc()['plate'];
 
-$current = mysqli_fetch_assoc($check);
-$currentPlate = $current['plate'];
-
+/* 2. if plate changed, ensure uniqueness */
 if ($plate !== $currentPlate) {
-    $dup = mysqli_query(
-        $conn,
-        "SELECT id FROM vehicles WHERE plate = '{$plateEsc}' AND id != {$id}"
+    $dup = $conn->prepare(
+        "SELECT id FROM vehicles WHERE user_id = ? AND plate = ? AND id <> ?"
     );
-    if ($dup && mysqli_num_rows($dup) > 0) {
+    $dup->bind_param('isi', $user_id, $plate, $id);
+    $dup->execute();
+    if ($dup->get_result()->num_rows > 0) {
         echo json_encode([
             'status' => 'error',
             'message' => 'Another vehicle with this plate already exists.'
@@ -47,29 +59,23 @@ if ($plate !== $currentPlate) {
     }
 }
 
-$sql = "
-    UPDATE vehicles
-       SET plate = '{$plateEsc}',
-           model = '{$modelEsc}',
-           color = '{$colorEsc}'
-     WHERE id    = {$id}
-";
-$res = mysqli_query($conn, $sql);
+/* 3. update */
+$upd = $conn->prepare(
+    "UPDATE vehicles
+        SET plate = ?, model = ?, color = ?
+      WHERE id = ? AND user_id = ?"
+);
+$upd->bind_param('sssii', $plate, $model, $color, $id, $user_id);
+$upd->execute();
 
-if ($res && mysqli_affected_rows($conn) >= 0) {
-    echo json_encode([
-        'status' => 'success',
-        'message' => 'Vehicle updated successfully.',
-        'data' => [
-            'id' => $id,
-            'plate' => $plate,
-            'model' => $model,
-            'color' => $color
-        ]
-    ]);
-} else {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Database error: ' . mysqli_error($conn)
-    ]);
-}
+/* 4. response */
+echo json_encode([
+    'status' => 'success',
+    'message' => 'Vehicle updated successfully.',
+    'data' => [
+        'id' => $id,
+        'plate' => $plate,
+        'model' => $model,
+        'color' => $color,
+    ],
+]);

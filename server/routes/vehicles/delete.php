@@ -1,43 +1,54 @@
 <?php
+// api/vehicles/delete.php  – delete a vehicle that belongs to the user
 
 require_once '../../db/db.php';
-$conn = connectToDatabase();
+session_start();
 
+/* ── Auth guard ───────────────────────────── */
+if (empty($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['status' => 'error', 'message' => 'Not authenticated']);
+    exit;
+}
+$user_id = $_SESSION['user_id'];
+
+/* ── Validate input ───────────────────────── */
 $id = $_POST['id'] ?? null;
 if (!is_numeric($id)) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Invalid or missing `id`.'
-    ]);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid or missing `id`.']);
     exit;
 }
-$id = mysqli_real_escape_string($conn, $id);
+$id = (int) $id;
 
-$check = mysqli_query(
-    $conn,
-    "SELECT id FROM vehicles WHERE id = '$id'"
+/* ── DB work ──────────────────────────────── */
+$conn = connectToDatabase();
+
+/* 1. confirm ownership */
+$chk = $conn->prepare(
+    "SELECT id FROM vehicles WHERE id = ? AND user_id = ?"
 );
-if (!$check || mysqli_num_rows($check) === 0) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Vehicle not found.'
-    ]);
+$chk->bind_param('ii', $id, $user_id);
+$chk->execute();
+if ($chk->get_result()->num_rows === 0) {
+    echo json_encode(['status' => 'error', 'message' => 'Vehicle not found.']);
     exit;
 }
 
-$del = mysqli_query(
-    $conn,
-    "DELETE FROM vehicles WHERE id = '$id'"
+/* 2. delete */
+$del = $conn->prepare(
+    "DELETE FROM vehicles WHERE id = ? AND user_id = ?"
 );
+$del->bind_param('ii', $id, $user_id);
+$del->execute();
 
-if ($del && mysqli_affected_rows($conn) > 0) {
+if ($del->affected_rows > 0) {
     echo json_encode([
         'status' => 'success',
-        'message' => "Vehicle (id={$id}) deleted successfully."
+        'message' => "Vehicle (id = $id) deleted successfully."
     ]);
 } else {
     echo json_encode([
         'status' => 'error',
-        'message' => 'Database error: ' . mysqli_error($conn)
+        'message' => 'Database error: ' . $conn->error,
     ]);
 }
