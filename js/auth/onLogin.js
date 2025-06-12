@@ -18,6 +18,7 @@ $(document).ready(
                 success: function (response) {
                     const data = JSON.parse(response);
                     if (data.status === 'success') {
+                        sessionStorage.setItem('userName', data.data.name);
                         window.location.assign('/pages/protected/parked_vehicles.html');
                     } else {
                         const errorMessageHelper = document.getElementById('error-message');

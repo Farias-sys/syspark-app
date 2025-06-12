@@ -1,20 +1,33 @@
 <?php
-
 require_once '../db/db.php';
-
 $conn = connectToDatabase();
 
-$login = $_POST['login'];
-$password = md5($_POST['password']);
+$login = $_POST['login'] ?? '';
+$password = md5($_POST['password'] ?? '');
 
-$check = mysqli_query($conn, "SELECT * FROM user WHERE login = '$login' AND password = '$password'");
+$sql = "SELECT id, login, name FROM user WHERE login = ? AND password = ?";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, 'ss', $login, $password);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 
-if (mysqli_num_rows($check) > 0) {
-    $user = mysqli_fetch_assoc($check);
+if ($user = mysqli_fetch_assoc($result)) {
     session_start();
-    $_SESSION['user'] = $user['login'];
     $_SESSION['id'] = $user['id'];
-    echo json_encode(array('status' => 'success', 'message' => 'Login successful'));
+    $_SESSION['login'] = $user['login'];
+
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Login successful',
+        'data' => [
+            'id' => $user['id'],
+            'login' => $user['login'],
+            'name' => $user['name']
+        ]
+    ]);
 } else {
-    echo json_encode(array('status' => 'error', 'message' => 'Invalid login or password'));
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Invalid login or password'
+    ]);
 }
