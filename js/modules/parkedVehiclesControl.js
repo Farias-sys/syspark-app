@@ -39,6 +39,23 @@ const getParkingSpots = () => {
     });
 };
 
+const getPricing = () => {
+    return $.ajax({
+        type: 'GET',
+        url: '../../server/routes/pricing/get.php',
+        dataType: 'json'
+    });
+};
+
+const updatePricing = (price_per_min, fixed_fee) => {
+    return $.ajax({
+        type: 'POST',
+        url: '../../server/routes/pricing/update.php',
+        data: { price_per_min, fixed_fee },
+        dataType: 'json'
+    });
+};
+
 function formatTime(ts) {
     const d = new Date(ts);
     return d.getHours().toString().padStart(2, '0') +
@@ -53,20 +70,20 @@ function formatDuration(startTs, endTs) {
     return `${h} h ${m} min`;
 }
 
-const formatCurrencyBRL = val =>
-  parseFloat(val).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const formatCurrencyBRL = val => {
+    return parseFloat(val).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+};
 
 function showExitSummary(data) {
-  $('#res-plate').text(data.plate);
-  $('#res-model').text(data.model);
-  $('#res-color').text(data.color);
-  $('#res-start').text(formatTime(data.date_start));
-  $('#res-end').text(formatTime(data.date_end));
-  $('#res-duration').text(formatDuration(data.date_start, data.date_end));
-  $('#res-value').text(formatCurrencyBRL(data.value));
-  $('#exit-summary-modal').modal('show');
+    $('#res-plate').text(data.plate);
+    $('#res-model').text(data.model);
+    $('#res-color').text(data.color);
+    $('#res-start').text(formatTime(data.date_start));
+    $('#res-end').text(formatTime(data.date_end));
+    $('#res-duration').text(formatDuration(data.date_start, data.date_end));
+    $('#res-value').text(formatCurrencyBRL(data.value));
+    $('#exit-summary-modal').modal('show');
 }
-
 
 function loadAvailableSpots() {
     getParkingSpots()
@@ -77,14 +94,12 @@ function loadAvailableSpots() {
                 .empty()
                 .append('<option value="" disabled selected>Selecione uma vaga</option>');
             freeSpots.forEach(s => {
-                // pad to two digits if you like:
-                const label = s.id.toString().padStart(2, '0');
+                const label = s.spot_number.toString().padStart(2,'0');
                 $sel.append(`<option value="${s.id}">${label}</option>`);
             });
         })
         .fail(() => alert('Falha de rede ao buscar vagas.'));
 }
-  
 
 function renderTables(vehicles) {
     const $current = $('#currentTableBody').empty();
@@ -97,19 +112,19 @@ function renderTables(vehicles) {
                     <td>${v.plate}</td>
                     <td>${v.model}</td>
                     <td>${v.color}</td>
-                    <td>${v.parking_spot}</td>
+                    <td>${v.spot_number}</td>
                     <td>${formatTime(v.date_start)}</td>
                     <td class="actions">
                         <button class="btn-action ok"
-                                        data-vehicle-id="${v.id}"
-                                        data-toggle="modal"
-                                        data-target="#register-exit-vehicle-modal">
+                                data-vehicle-id="${v.id}"
+                                data-toggle="modal"
+                                data-target="#register-exit-vehicle-modal">
                             Registrar saída
                         </button>
                         <button class="btn-action danger"
-                                        data-vehicle-id="${v.id}"
-                                        data-toggle="modal"
-                                        data-target="#delete-parked-vehicle-modal">
+                                data-vehicle-id="${v.id}"
+                                data-toggle="modal"
+                                data-target="#delete-parked-vehicle-modal">
                             Deletar
                         </button>
                     </td>
@@ -152,85 +167,109 @@ function listParkedVehicles() {
         });
 }
 
-$(document).ready(
+$(document).ready(() => {
+    listParkedVehicles();
 
-    () => {
-        listParkedVehicles();
+    $('#park-vehicle-modal').on('show.bs.modal', loadAvailableSpots);
 
-        $('#park-vehicle-modal').on('show.bs.modal', loadAvailableSpots);
-
-        $('#park-vehicle-form').on('submit', function(event) {
-            event.preventDefault();
-            const arr = $(this).serializeArray();
-            const obj = Object.fromEntries(
-                arr.map(({ name, value }) => [name, value])
-            );
-            console.log(arr);
-            postParkedVehicle(obj)
-                .done(resp => {
-                    const data = JSON.parse(resp);
-                    if (data.status === 'success') {
-                        $('#park-vehicle-modal').modal('hide');
-                        listParkedVehicles();
-                    } else {
-                        alert('Erro ao estacionar veículo!');
-                    }
-                })
-                .fail(() => alert('Erro de rede ao estacionar.'))
-                .always(() => this.reset());
-        });
-
-        $(document).on(
-            'click',
-            'button[data-target="#register-exit-vehicle-modal"]',
-            function() {
-                const id = $(this).data('vehicle-id');
-                $('#register-exit-vehicle-modal .btn-success').data('vehicle-id', id);
-            }
+    $('#park-vehicle-form').on('submit', function(event) {
+        event.preventDefault();
+        const arr = $(this).serializeArray();
+        const obj = Object.fromEntries(
+            arr.map(({ name, value }) => [name, value])
         );
-        $('#register-exit-vehicle-modal .btn-success').on('click', function() {
+        postParkedVehicle(obj)
+            .done(resp => {
+                const data = JSON.parse(resp);
+                if (data.status === 'success') {
+                    $('#park-vehicle-modal').modal('hide');
+                    listParkedVehicles();
+                } else {
+                    alert('Erro ao estacionar veículo!');
+                }
+            })
+            .fail(() => alert('Erro de rede ao estacionar.'))
+            .always(() => this.reset());
+    });
+
+    $(document).on(
+        'click',
+        'button[data-target="#register-exit-vehicle-modal"]',
+        function() {
             const id = $(this).data('vehicle-id');
-                registerExitVehicle(id)
-                .done(res => {
-                    if (res.status === 'success') {
+            $('#register-exit-vehicle-modal .btn-success').data('vehicle-id', id);
+        }
+    );
+
+    $('#register-exit-vehicle-modal .btn-success').on('click', function() {
+        const id = $(this).data('vehicle-id');
+        registerExitVehicle(id)
+            .done(res => {
+                if (res.status === 'success') {
                     listParkedVehicles();
                     showExitSummary(res.data);
-                    } else {
+                } else {
                     alert('Erro ao registrar saída!');
-                    }
-                })
-                .fail(() => alert('Erro de rede ao registrar saída.'))
-                .always(() =>
-                    $('#register-exit-vehicle-modal').modal('hide')
-                );
-        });
+                }
+            })
+            .fail(() => alert('Erro de rede ao registrar saída.'))
+            .always(() => $('#register-exit-vehicle-modal').modal('hide'));
+    });
 
-        $(document).on(
-            'click',
-            'button[data-target="#delete-parked-vehicle-modal"]',
-            function() {
-                const id = $(this).data('vehicle-id');
-                $('#delete-parked-vehicle-modal .btn-danger').data('vehicle-id', id);
-            }
-        );
-        $('#delete-parked-vehicle-modal .btn-danger').on('click', function() {
+    $(document).on(
+        'click',
+        'button[data-target="#delete-parked-vehicle-modal"]',
+        function() {
             const id = $(this).data('vehicle-id');
-            deleteParkedVehicle(id)
-                .done(res => {
-                    res = JSON.parse(res);
-                    if (res.status === 'success') {
-                        listParkedVehicles();
-                    } else {
-                        alert('Erro ao deletar veículo!');
-                    }
-                })
-                .fail(() => alert('Erro de rede ao deletar.'))
-                .always(() =>
-                    $('#delete-parked-vehicle-modal').modal('hide')
-                );
-        });
-    }
-);
+            $('#delete-parked-vehicle-modal .btn-danger').data('vehicle-id', id);
+        }
+    );
+
+    $('#delete-parked-vehicle-modal .btn-danger').on('click', function() {
+        const id = $(this).data('vehicle-id');
+        deleteParkedVehicle(id)
+            .done(res => {
+                res = JSON.parse(res);
+                if (res.status === 'success') {
+                    listParkedVehicles();
+                } else {
+                    alert('Erro ao deletar veículo!');
+                }
+            })
+            .fail(() => alert('Erro de rede ao deletar.'))
+            .always(() => $('#delete-parked-vehicle-modal').modal('hide'));
+    });
+
+    $('#pricingModal').on('show.bs.modal', () => {
+        getPricing()
+            .done(res => {
+                if (res.status === 'success') {
+                    $('#pricePerMin').val(res.data.price_per_min);
+                    $('#fixedFee').val(res.data.fixed_fee);
+                } else {
+                    alert('Erro ao obter tarifas!');
+                }
+            })
+            .fail(() => alert('Falha de rede ao buscar tarifas.'));
+    });
+
+    $('#pricingForm').on('submit', function(e) {
+        e.preventDefault();
+        const pricePerMin = $('#pricePerMin').val();
+        const fixedFee = $('#fixedFee').val();
+
+        updatePricing(pricePerMin, fixedFee)
+            .done(res => {
+                if (res.status === 'success') {
+                    $('#pricingModal').modal('hide');
+                    alert('Tarifas salvas com sucesso!');
+                } else {
+                    alert('Erro ao salvar tarifas!');
+                }
+            })
+            .fail(() => alert('Falha de rede ao salvar tarifas.'));
+    });
+});
 
 (() => {
     const $plate = $('#plate');
@@ -238,7 +277,7 @@ $(document).ready(
     const $color = $('#color');
     const $list = $('#plateList');
 
-    $plate.on('input', async function () {
+    $plate.on('input', async function() {
         const q = this.value.toUpperCase();
         if (q.length < 2) {
             $list.empty();
@@ -259,7 +298,7 @@ $(document).ready(
         }
     });
 
-    $plate.on('change blur', async function () {
+    $plate.on('change blur', async function() {
         const plate = this.value.toUpperCase();
         if (!plate) return;
         try {

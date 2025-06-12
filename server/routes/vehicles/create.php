@@ -1,10 +1,7 @@
 <?php
-// api/vehicles/create.php  – add a vehicle for the logged-in user
-
 require_once '../../db/db.php';
 session_start();
 
-/* ── Auth guard ───────────────────────────── */
 if (empty($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(['status' => 'error', 'message' => 'Not authenticated']);
@@ -12,7 +9,6 @@ if (empty($_SESSION['user_id'])) {
 }
 $user_id = $_SESSION['user_id'];
 
-/* ── Validate input ───────────────────────── */
 $plate = strtoupper(trim($_POST['plate'] ?? ''));
 $model = trim($_POST['model'] ?? '');
 $color = trim($_POST['color'] ?? '');
@@ -25,10 +21,8 @@ if ($plate === '' || $model === '' || $color === '') {
     exit;
 }
 
-/* ── DB work ──────────────────────────────── */
 $conn = connectToDatabase();
 
-/* 1. ensure plate is unique for this user */
 $dup = $conn->prepare(
     "SELECT id FROM vehicles WHERE user_id = ? AND plate = ? LIMIT 1"
 );
@@ -42,7 +36,6 @@ if ($dup->get_result()->num_rows > 0) {
     exit;
 }
 
-/* 2. insert */
 $ins = $conn->prepare(
     "INSERT INTO vehicles (user_id, plate, model, color)
      VALUES (?, ?, ?, ?)"
