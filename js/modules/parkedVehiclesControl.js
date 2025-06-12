@@ -18,7 +18,8 @@ const registerExitVehicle = (id) => {
     return $.ajax({
         type: 'POST',
         url: '../../server/routes/parked_vehicles/register_vehicle_exit.php',
-        data: { id }
+        data: { id },
+        dataType: 'json'
     });
 };
 
@@ -51,6 +52,21 @@ function formatDuration(startTs, endTs) {
     const m = minsTotal % 60;
     return `${h} h ${m} min`;
 }
+
+const formatCurrencyBRL = val =>
+  parseFloat(val).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+function showExitSummary(data) {
+  $('#res-plate').text(data.plate);
+  $('#res-model').text(data.model);
+  $('#res-color').text(data.color);
+  $('#res-start').text(formatTime(data.date_start));
+  $('#res-end').text(formatTime(data.date_end));
+  $('#res-duration').text(formatDuration(data.date_start, data.date_end));
+  $('#res-value').text(formatCurrencyBRL(data.value));
+  $('#exit-summary-modal').modal('show');
+}
+
 
 function loadAvailableSpots() {
     getParkingSpots()
@@ -173,13 +189,13 @@ $(document).ready(
         );
         $('#register-exit-vehicle-modal .btn-success').on('click', function() {
             const id = $(this).data('vehicle-id');
-            registerExitVehicle(id)
+                registerExitVehicle(id)
                 .done(res => {
-                    res = JSON.parse(res);
                     if (res.status === 'success') {
-                        listParkedVehicles();
+                    listParkedVehicles();
+                    showExitSummary(res.data);
                     } else {
-                        alert('Erro ao registrar saída!');
+                    alert('Erro ao registrar saída!');
                     }
                 })
                 .fail(() => alert('Erro de rede ao registrar saída.'))
