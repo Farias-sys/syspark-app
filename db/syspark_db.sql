@@ -1,31 +1,38 @@
-CREATE DATABASE  IF NOT EXISTS `app` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `app`;
--- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1    Database: app
--- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- Host: 127.0.0.1
+-- Generation Time: Jun 12, 2025 at 08:05 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `app`
+--
+CREATE DATABASE IF NOT EXISTS `app` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `app`;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `parked_vehicles`
 --
 
 DROP TABLE IF EXISTS `parked_vehicles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `parked_vehicles` (
+CREATE TABLE IF NOT EXISTS `parked_vehicles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
   `vehicle_id` int(11) NOT NULL,
   `parking_spot_id` int(11) NOT NULL,
   `date_start` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -33,202 +40,198 @@ CREATE TABLE `parked_vehicles` (
   `value` decimal(19,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `vehicle_parking_spot_uniqueness` (`vehicle_id`,`parking_spot_id`),
+  KEY `fk_parked_vehicles_user_idx` (`user_id`),
   KEY `fk_vehicle_id_idx` (`vehicle_id`),
-  KEY `fk_parking_spot_id_idx` (`parking_spot_id`),
-  CONSTRAINT `fk_parking_spot_id` FOREIGN KEY (`parking_spot_id`) REFERENCES `parking_spots` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_vehicle_id` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  KEY `fk_parking_spot_id_idx` (`parking_spot_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `parked_vehicles`
+-- Truncate table before insert `parked_vehicles`
 --
 
-LOCK TABLES `parked_vehicles` WRITE;
-/*!40000 ALTER TABLE `parked_vehicles` DISABLE KEYS */;
-INSERT INTO `parked_vehicles` VALUES (5,1,1,'2025-05-08 16:54:29','2025-05-08 16:59:32',15.00);
-/*!40000 ALTER TABLE `parked_vehicles` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_parked_vehicles_after_insert
-AFTER INSERT ON parked_vehicles
-FOR EACH ROW
-BEGIN
+TRUNCATE TABLE `parked_vehicles`;
+--
+-- Triggers `parked_vehicles`
+--
+DROP TRIGGER IF EXISTS `trg_parked_vehicles_after_insert`;
+DELIMITER $$
+CREATE TRIGGER `trg_parked_vehicles_after_insert` AFTER INSERT ON `parked_vehicles` FOR EACH ROW BEGIN
   UPDATE parking_spots AS p
-  JOIN vehicles      AS v ON v.id = NEW.vehicle_id
-  SET 
+    JOIN vehicles      AS v ON v.id = NEW.vehicle_id
+  SET
     p.status    = 'busy',
     p.in_use_by = v.plate
-  WHERE p.id = NEW.parking_spot_id;
-END */;;
+  WHERE p.id = NEW.parking_spot_id
+    AND p.user_id = NEW.user_id;          -- NEW!
+END
+$$
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_parked_vehicles_after_update
-AFTER UPDATE ON parked_vehicles
-FOR EACH ROW
-BEGIN
+DROP TRIGGER IF EXISTS `trg_parked_vehicles_after_update`;
+DELIMITER $$
+CREATE TRIGGER `trg_parked_vehicles_after_update` AFTER UPDATE ON `parked_vehicles` FOR EACH ROW BEGIN
   IF OLD.parking_spot_id <> NEW.parking_spot_id
      OR (OLD.date_end IS NULL AND NEW.date_end IS NOT NULL) THEN
     UPDATE parking_spots
-    SET 
-      status    = 'available',
-      in_use_by = NULL
-    WHERE id = OLD.parking_spot_id;
+       SET status = 'available',
+           in_use_by = NULL
+     WHERE id = OLD.parking_spot_id
+       AND user_id = OLD.user_id;        -- NEW!
   END IF;
 
   IF NEW.date_end IS NULL THEN
     UPDATE parking_spots AS p
-    JOIN vehicles      AS v ON v.id = NEW.vehicle_id
-    SET 
-      p.status    = 'busy',
-      p.in_use_by = v.plate
-    WHERE p.id = NEW.parking_spot_id;
+      JOIN vehicles      AS v ON v.id = NEW.vehicle_id
+    SET p.status    = 'busy',
+        p.in_use_by = v.plate
+    WHERE p.id = NEW.parking_spot_id
+      AND p.user_id = NEW.user_id;       -- NEW!
   END IF;
-END */;;
+END
+$$
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `parking_spots`
 --
 
 DROP TABLE IF EXISTS `parking_spots`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `parking_spots` (
+CREATE TABLE IF NOT EXISTS `parking_spots` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `spot_number` int(11) NOT NULL,
   `status` enum('available','busy','innoperant') NOT NULL DEFAULT 'available',
   `active` tinyint(4) NOT NULL DEFAULT 1,
   `in_use_by` varchar(8) DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_spot_unique` (`user_id`,`spot_number`),
+  KEY `fk_parking_spots_user_idx` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Truncate table before insert `parking_spots`
+--
+
+TRUNCATE TABLE `parking_spots`;
 --
 -- Dumping data for table `parking_spots`
 --
 
-LOCK TABLES `parking_spots` WRITE;
-/*!40000 ALTER TABLE `parking_spots` DISABLE KEYS */;
-INSERT INTO `parking_spots` VALUES (1,'available',1,NULL,'2025-05-08 15:47:46'),(2,'available',1,NULL,'2025-05-08 15:47:46'),(3,'available',1,NULL,'2025-05-08 15:47:46'),(4,'available',1,NULL,'2025-05-08 15:47:46'),(5,'available',1,NULL,'2025-05-08 15:47:46'),(6,'available',1,NULL,'2025-05-08 15:47:46'),(7,'available',1,NULL,'2025-05-08 15:47:46'),(8,'available',1,NULL,'2025-05-08 15:47:46'),(9,'available',1,NULL,'2025-05-08 15:47:46'),(10,'available',1,NULL,'2025-05-08 15:47:46'),(11,'available',1,NULL,'2025-05-08 15:47:46'),(12,'available',1,NULL,'2025-05-08 15:52:37'),(13,'available',1,NULL,'2025-05-08 15:52:44');
-/*!40000 ALTER TABLE `parking_spots` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_parking_spots_before_update_inactive
-BEFORE UPDATE ON parking_spots
-FOR EACH ROW
-BEGIN
+INSERT INTO `parking_spots` (`id`, `user_id`, `spot_number`, `status`, `active`, `in_use_by`, `date_created`) VALUES
+(15, 3, 1, 'available', 1, NULL, '2025-06-12 17:59:57'),
+(16, 3, 2, 'available', 1, NULL, '2025-06-12 17:59:57'),
+(17, 3, 3, 'available', 1, NULL, '2025-06-12 17:59:57'),
+(18, 3, 4, 'available', 1, NULL, '2025-06-12 17:59:57');
+
+--
+-- Triggers `parking_spots`
+--
+DROP TRIGGER IF EXISTS `trg_parking_spots_before_update_inactive`;
+DELIMITER $$
+CREATE TRIGGER `trg_parking_spots_before_update_inactive` BEFORE UPDATE ON `parking_spots` FOR EACH ROW BEGIN
   IF NEW.active = 0 THEN
     SET NEW.status = 'innoperant';
   ELSEIF NEW.active = 1 AND NEW.in_use_by IS NOT NULL THEN
-	SET NEW.status = 'busy';
+    SET NEW.status = 'busy';
   ELSEIF NEW.active = 1 THEN
     SET NEW.status = 'available';
   END IF;
-END */;;
+END
+$$
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
+DROP TRIGGER IF EXISTS `trg_parking_spots_set_number`;
+DELIMITER $$
+CREATE TRIGGER `trg_parking_spots_set_number` BEFORE INSERT ON `parking_spots` FOR EACH ROW BEGIN
+  DECLARE next_no INT;
+  SELECT COALESCE(MAX(spot_number),0) + 1
+    INTO next_no
+    FROM parking_spots
+   WHERE user_id = NEW.user_id;
+  SET NEW.spot_number = next_no;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `user`
 --
 
 DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
+CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(255) NOT NULL,
   `password` varchar(32) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `login_UNIQUE` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Truncate table before insert `user`
+--
+
+TRUNCATE TABLE `user`;
 --
 -- Dumping data for table `user`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'root@gmail.com','e7d80ffeefa212b7c5c55700e4f7193e');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `user` (`id`, `login`, `password`, `name`) VALUES
+(2, 'cafsalgadojr@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Carlos Alberto'),
+(3, 'teste@gmail.com', 'aa1bf4646de67fd9086cf6c79007026c', 'Teste');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `vehicles`
 --
 
 DROP TABLE IF EXISTS `vehicles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `vehicles` (
+CREATE TABLE IF NOT EXISTS `vehicles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
   `plate` varchar(8) NOT NULL,
   `model` varchar(100) NOT NULL,
   `date_created` date NOT NULL DEFAULT current_timestamp(),
   `color` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `plate_UNIQUE` (`plate`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  UNIQUE KEY `user_plate_UNIQUE` (`user_id`,`plate`),
+  KEY `fk_vehicles_user_idx` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `vehicles`
+-- Truncate table before insert `vehicles`
 --
 
-LOCK TABLES `vehicles` WRITE;
-/*!40000 ALTER TABLE `vehicles` DISABLE KEYS */;
-INSERT INTO `vehicles` VALUES (1,'RKG9G60','Corolla Xei','2025-05-08','Prata');
-/*!40000 ALTER TABLE `vehicles` ENABLE KEYS */;
-UNLOCK TABLES;
+TRUNCATE TABLE `vehicles`;
+--
+-- Constraints for dumped tables
+--
 
 --
--- Dumping routines for database 'app'
+-- Constraints for table `parked_vehicles`
 --
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+ALTER TABLE `parked_vehicles`
+  ADD CONSTRAINT `fk_parked_vehicles_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_parking_spot_id` FOREIGN KEY (`parking_spot_id`) REFERENCES `parking_spots` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_vehicle_id` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Constraints for table `parking_spots`
+--
+ALTER TABLE `parking_spots`
+  ADD CONSTRAINT `fk_parking_spots_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `vehicles`
+--
+ALTER TABLE `vehicles`
+  ADD CONSTRAINT `fk_vehicles_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2025-05-08 14:19:13

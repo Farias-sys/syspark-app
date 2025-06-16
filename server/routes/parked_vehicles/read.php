@@ -18,6 +18,7 @@ $sql = "
     v.model,
     v.color,
     pv.parking_spot_id AS parking_spot,
+    ps.spot_number,
     pv.date_start,
     pv.date_end,
     pv.value
